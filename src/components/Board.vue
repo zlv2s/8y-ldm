@@ -146,6 +146,10 @@
     <a-back-top></a-back-top>
 
     <div class="load-info" v-html="this.loadInfo"></div>
+    <textarea name="" id="" cols="30" rows="10" :value="loadInfo"></textarea>
+    <a-modal title="MVT / LDM" v-model="visible" @ok="handleOk">
+      <div v-html="loadInfo"></div>
+    </a-modal>
   </div>
 </template>
 
@@ -154,6 +158,7 @@ import { emptyObj } from '@/utils'
 export default {
   data() {
     return {
+      visible: false,
       loadInfo: '',
       ac: {
         reg: '7937',
@@ -214,6 +219,9 @@ export default {
     }
   },
   methods: {
+    handleOk() {
+      this.visible = false
+    },
     utc(timestr) {
       const utcHR =
         Number(timestr.substr(0, 2)) + 16 >= 24
@@ -223,6 +231,7 @@ export default {
       return ('' + utcHR).padStart(2, '0') + timestr.substr(2, 2)
     },
     generate() {
+      this.visible = true
       if (this.loadInfo) {
         this.loadInfo = ''
       }

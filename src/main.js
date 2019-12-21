@@ -1,19 +1,15 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-import { Row, Col, Button, Card, BackTop } from 'ant-design-vue'
+import { Row, Col, Button, Card, BackTop, Modal } from 'ant-design-vue'
 
 Vue.use(Row)
 Vue.use(Col)
 Vue.use(Button)
 Vue.use(Card)
 Vue.use(BackTop)
+Vue.use(Modal)
 Vue.config.productionTip = false
-
-new Vue({
-  router,
-  render: h => h(App)
-}).$mount('#app')
 
 var _hmt = []
 // 必须把_hmt挂载到window下，否则找不到
@@ -36,3 +32,8 @@ router.beforeEach((to, from, next) => {
 
   next()
 })
+
+new Vue({
+  router,
+  render: h => h(App)
+}).$mount('#app')

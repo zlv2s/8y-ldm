@@ -18,12 +18,16 @@
 <script>
 import Board from '@/components/Board.vue'
 import Header from '@/components/Header.vue'
+// import { baiduTj } from '@/api'
 
 export default {
   name: 'home',
   components: {
     Header,
     Board
+  },
+  mounted() {
+    // baiduTj()
   }
 }
 </script>
