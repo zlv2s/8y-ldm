@@ -146,15 +146,14 @@
     <a-back-top></a-back-top>
 
     <div class="load-info" v-html="this.loadInfo"></div>
-    <textarea name="" id="" cols="30" rows="10" :value="loadInfo"></textarea>
     <a-modal title="MVT / LDM" v-model="visible" @ok="handleOk">
-      <div v-html="loadInfo"></div>
+      <div v-html="loadInfo" id="loadInfo"></div>
     </a-modal>
   </div>
 </template>
 
 <script>
-import { emptyObj } from '@/utils'
+import { emptyObj, selectText } from '@/utils'
 export default {
   data() {
     return {
@@ -220,6 +219,9 @@ export default {
   },
   methods: {
     handleOk() {
+      selectText('loadInfo')
+      document.execCommand('Copy', 'false', null)
+      this.$message.success('copy success!')
       this.visible = false
     },
     utc(timestr) {
