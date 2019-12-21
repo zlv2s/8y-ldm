@@ -146,7 +146,7 @@
     <a-back-top></a-back-top>
 
     <div class="load-info" v-html="this.loadInfo"></div>
-    <a-modal title="MVT / LDM" v-model="visible" @ok="handleOk">
+    <a-modal title="MVT / LDM" v-model="visible" @ok="handleOk" okText="Copy">
       <div v-html="loadInfo" id="loadInfo"></div>
     </a-modal>
   </div>
@@ -222,7 +222,9 @@ export default {
       selectText('loadInfo')
       document.execCommand('Copy', 'false', null)
       this.$message.success('copy success!')
-      this.visible = false
+      setTimeout(() => {
+        this.visible = false
+      }, 400)
     },
     utc(timestr) {
       const utcHR =
@@ -240,7 +242,7 @@ export default {
       this.loadInfo = `
 <p><strong>MVT</strong></p>
 <p>8Y823/${this.dof} RPC${this.ac.reg}.CTU</p>
-<p>AD${this.utc(this.flt.pb)}/${this.utc(this.flt.ab)} 0030KLO</p>
+<p>AD${this.utc(this.flt.pb)}/${this.utc(this.flt.ab)} ${this.utc(this.flt.eta)}KLO</p>
 <p>PAX ${this.tob}</p>
 <br/>
 <p>CREW: ${this.ac.cockpit}/${this.ac.cabin}+${this.ac.fm}FM  PAX: ${
@@ -280,10 +282,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.info-container {
-  /* padding: 0 20px 0 20px; */
-}
-
 .tb-info {
   font-weight: bold;
   text-align: left;
