@@ -18,3 +18,20 @@ export function baiduTj() {
     console.log(res)
   })
 }
+
+export function getFltStatus(anum, fnum) {
+  return new Promise((resolve, reject) => {
+    axios({
+      url: 'https://adsbapi.variflight.com/adsb/index/flightdetail',
+      params: {
+        lang: 'zh_CN',
+        anum,
+        fnum
+      }
+    }).then(res => {
+      resolve(res.data)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}

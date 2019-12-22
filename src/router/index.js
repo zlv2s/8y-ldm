@@ -14,6 +14,10 @@ const routes = [
     name: '404',
     component: () => import('../views/404.vue')
   }, {
+    path: '/weather',
+    name: 'Weather',
+    component: () => import('../views/Weather.vue')
+  }, {
     path: '*',
     redirect: '/404'
   }

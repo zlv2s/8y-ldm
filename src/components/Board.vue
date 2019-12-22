@@ -146,7 +146,7 @@
     <a-back-top></a-back-top>
 
     <div class="load-info" v-html="this.loadInfo"></div>
-    <a-modal title="MVT / LDM" v-model="visible" @ok="handleOk" okText="Copy">
+    <a-modal title="MVT / LDM" v-model="visible" @ok="handleOk" okText="Copy" style="top: 20px;">
       <div v-html="loadInfo" id="loadInfo"></div>
     </a-modal>
   </div>
@@ -329,5 +329,10 @@ td input {
 .load-info {
   text-align: left;
   margin-top: 30px;
+}
+
+#loadInfo {
+  overflow-y: auto;
+  height: 60vh;
 }
 </style>
