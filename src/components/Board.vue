@@ -5,6 +5,7 @@
       <table class="tb-ac">
         <thead>
           <tr>
+            <th>FLT</th>
             <th>A/C REG</th>
             <th>COCKPIT</th>
             <th>CABIN</th>
@@ -14,16 +15,19 @@
         <tbody>
           <tr>
             <td>
-              <input v-model="ac.reg" />
+              <a-input size="small" v-model="ac.flt" />
             </td>
             <td>
-              <input v-model="ac.cockpit" />
+              <a-input size="small" v-model="ac.reg" />
             </td>
             <td>
-              <input v-model="ac.cabin" />
+              <a-input size="small" v-model="ac.cockpit" />
             </td>
             <td>
-              <input v-model="ac.fm" />
+              <a-input size="small" v-model="ac.cabin" />
+            </td>
+            <td>
+              <a-input size="small" v-model="ac.fm" />
             </td>
           </tr>
         </tbody>
@@ -31,6 +35,7 @@
     </a-card>
 
     <a-card title="PAX & BAG" style="margin-top:10px">
+      <p class="tb-info">Notice: Fill with Integer Value</p>
       <div class="pax-bag">
         <table class="tb-pax">
         <thead>
@@ -43,13 +48,13 @@
         <tbody>
           <tr>
             <td>
-              <input v-model="pax.adt" />
+              <a-input size="small" v-model="pax.adt" />
             </td>
             <td>
-              <input v-model="pax.chd" />
+              <a-input size="small" v-model="pax.chd" />
             </td>
             <td>
-              <input v-model="pax.inf" />
+              <a-input size="small" v-model="pax.inf" />
             </td>
           </tr>
         </tbody>
@@ -64,10 +69,10 @@
         <tbody>
           <tr>
             <td>
-              <input v-model="bag.pcs" />
+              <a-input size="small" v-model="bag.pcs" />
             </td>
             <td>
-              <input v-model="bag.weight" />
+              <a-input size="small" v-model="bag.weight" />
             </td>
           </tr>
         </tbody>
@@ -89,16 +94,16 @@
         <tbody>
           <tr>
             <td>
-              <input v-model="cargo.h5" />
+              <a-input size="small" v-model="cargo.h5" />
             </td>
             <td>
-              <input v-model="cargo.h4" />
+              <a-input size="small" v-model="cargo.h4" />
             </td>
             <td>
-              <input v-model="cargo.h3" />
+              <a-input size="small" v-model="cargo.h3" />
             </td>
             <td>
-              <input v-model="cargo.h1" />
+              <a-input size="small" v-model="cargo.h1" />
             </td>
           </tr>
         </tbody>
@@ -120,19 +125,19 @@
         <tbody>
           <tr>
             <td>
-              <input v-model="flt.dc" />
+              <a-input size="small" v-model="flt.dc" />
             </td>
             <td>
-              <input v-model="flt.oc" />
+              <a-input size="small" v-model="flt.oc" />
             </td>
             <td>
-              <input v-model="flt.pb" />
+              <a-input size="small" v-model="flt.pb" />
             </td>
             <td>
-              <input v-model="flt.ab" />
+              <a-input size="small" v-model="flt.ab" />
             </td>
             <td>
-              <input v-model="flt.eta" />
+              <a-input size="small" v-model="flt.eta" />
             </td>
           </tr>
         </tbody>
@@ -145,7 +150,9 @@
     </div>
     <a-back-top></a-back-top>
 
-    <div class="load-info" v-html="this.loadInfo"></div>
+    <div class="info-wrapper">
+      <div class="load-info" v-html="this.loadInfo"></div>
+    </div>
     <a-modal title="MVT / LDM" v-model="visible" @ok="handleOk" okText="Copy" style="top: 20px;">
       <div v-html="loadInfo" id="loadInfo"></div>
     </a-modal>
@@ -160,6 +167,7 @@ export default {
       visible: false,
       loadInfo: '',
       ac: {
+        flt: '823',
         reg: '7937',
         cockpit: '4',
         cabin: '4',
@@ -241,7 +249,7 @@ export default {
       }
       this.loadInfo = `
 <p><strong>MVT</strong></p>
-<p>8Y823/${this.dof} RPC${this.ac.reg}.CTU</p>
+<p>8Y${this.ac.flt}/${this.dof} RPC${this.ac.reg}.CTU</p>
 <p>AD${this.utc(this.flt.pb)}/${this.utc(this.flt.ab)} ${this.utc(this.flt.eta)}KLO</p>
 <p>PAX ${this.tob}</p>
 <br/>
@@ -254,7 +262,7 @@ export default {
 <p>AIRBORNE: ${this.utc(this.flt.ab)}Z</p>
 <p>================================</p>
 <p><strong>LDM</strong></p>
-<p>8Y823/${this.dof}. RPC${this.ac.reg}.Y180.${this.ac.cockpit}/${
+<p>8Y${this.ac.flt}/${this.dof}. RPC${this.ac.reg}.Y180.${this.ac.cockpit}/${
         this.ac.cabin
       }+${this.ac.fm}FM</p>
 <br/>
@@ -298,16 +306,11 @@ th {
   text-align: center;
 }
 
-tr {
-  /* padding: 5px; */
-}
-
 td {
-  height: 30px;
   padding: 5px;
 }
 td input {
-  width: 100%;
+  /* width: 100%; */
   text-align: center;
 }
 
@@ -326,9 +329,16 @@ td input {
   }
 }
 
-.load-info {
-  text-align: left;
+.info-wrapper {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  /* align-items: center; */
   margin-top: 30px;
+  .load-info{
+    display: flex;
+    flex-direction: column;
+  }
 }
 
 #loadInfo {

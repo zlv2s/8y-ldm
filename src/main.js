@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-import { Row, Col, Button, Card, BackTop, Modal, message, Icon } from 'ant-design-vue'
+import { Row, Col, Button, Card, BackTop, Modal, message, Icon, Input } from 'ant-design-vue'
 
 Vue.use(Row)
 Vue.use(Col)
@@ -10,6 +10,7 @@ Vue.use(Card)
 Vue.use(BackTop)
 Vue.use(Modal)
 Vue.use(Icon)
+Vue.use(Input)
 Vue.prototype.$message = message
 
 Vue.config.productionTip = false
