@@ -20,6 +20,10 @@ export function baiduTj() {
   })
 }
 
+// const url1 = 'https://www.flightradar24.com/v1/search/web/find?query=aav824&limit=10'
+
+// const url2 = 'https://data-live.flightradar24.com/clickhandler/?version=1.5&flight=2346b270'
+
 export function getFltStatus(anum, fnum) {
   return new Promise((resolve, reject) => {
     axios({

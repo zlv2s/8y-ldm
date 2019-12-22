@@ -2,14 +2,14 @@
   <div class="info-container">
     <a-card title="A/C INFO">
       <p class="tb-info">Notice: Change the default value if needed</p>
-      <table class="tb-ac">
+      <div class="tb-3">
+          <table class="tb-ac">
         <thead>
           <tr>
             <th>FLT</th>
-            <th>A/C REG</th>
-            <th>COCKPIT</th>
-            <th>CABIN</th>
-            <th>FM</th>
+            <th>REG</th>
+            <th>FROM</th>
+            <th>TO</th>
           </tr>
         </thead>
         <tbody>
@@ -20,6 +20,25 @@
             <td>
               <a-input size="small" v-model="ac.reg" />
             </td>
+            <td>
+              <a-input size="small" v-model="ac.from" />
+            </td>
+            <td>
+              <a-input size="small" v-model="ac.to" />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <table>
+        <thead>
+          <tr>
+            <th>PIC</th>
+            <th>CBN</th>
+            <th>FM</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
             <td>
               <a-input size="small" v-model="ac.cockpit" />
             </td>
@@ -32,11 +51,12 @@
           </tr>
         </tbody>
       </table>
+      </div>
     </a-card>
 
     <a-card title="PAX & BAG" style="margin-top:10px">
       <p class="tb-info">Notice: Fill with Integer Value</p>
-      <div class="pax-bag">
+      <div class="tb-2">
         <table class="tb-pax">
         <thead>
           <tr>
@@ -63,7 +83,7 @@
         <thead>
           <tr>
             <th>PCS</th>
-            <th>WEIGHT</th>
+            <th>KG</th>
           </tr>
         </thead>
         <tbody>
@@ -153,14 +173,14 @@
     <div class="info-wrapper">
       <div class="load-info" v-html="this.loadInfo"></div>
     </div>
-    <a-modal title="MVT / LDM" v-model="visible" @ok="handleOk" okText="Copy" style="top: 20px;">
+    <a-modal :title="mvtTitle" v-model="visible" @ok="handleOk" okText="Copy" style="top: 20px;">
       <div v-html="loadInfo" id="loadInfo"></div>
     </a-modal>
   </div>
 </template>
 
 <script>
-import { emptyObj, selectText } from '@/utils'
+import { emptyObj, selectText, dateMap } from '@/utils'
 export default {
   data() {
     return {
@@ -169,6 +189,8 @@ export default {
       ac: {
         flt: '823',
         reg: '7937',
+        from: 'CTU',
+        to: 'KLO',
         cockpit: '4',
         cabin: '4',
         fm: '1'
@@ -223,6 +245,14 @@ export default {
     },
     dof() {
       return new Date().getDate()
+    },
+    mvtTitle() {
+      let dateArr = new Date().toLocaleDateString('en-GB').split('/')
+      let monthNum = dateArr[1]
+      let yearNum = dateArr[2]
+      dateArr[1] = dateMap[monthNum]
+      dateArr[2] = yearNum.substr(2, 2)
+      return `MVT/LDM 8Y${this.ac.flt} ${dateArr.join('')} ${this.ac.from.toUpperCase()}-${this.ac.to.toUpperCase()}`
     }
   },
   methods: {
@@ -249,8 +279,8 @@ export default {
       }
       this.loadInfo = `
 <p><strong>MVT</strong></p>
-<p>8Y${this.ac.flt}/${this.dof} RPC${this.ac.reg}.CTU</p>
-<p>AD${this.utc(this.flt.pb)}/${this.utc(this.flt.ab)} ${this.utc(this.flt.eta)}KLO</p>
+<p>8Y${this.ac.flt}/${this.dof} RPC${this.ac.reg}.${this.ac.from.toUpperCase()}</p>
+<p>AD${this.utc(this.flt.pb)}/${this.utc(this.flt.ab)} ${this.utc(this.flt.eta)}${this.ac.to.toUpperCase()}</p>
 <p>PAX ${this.tob}</p>
 <br/>
 <p>CREW: ${this.ac.cockpit}/${this.ac.cabin}+${this.ac.fm}FM  PAX: ${
@@ -260,13 +290,13 @@ export default {
 <p>OFFBLOCKS: ${this.utc(this.flt.oc)}Z</p>
 <p>TAXI OUT: ${this.utc(this.flt.pb)}Z</p>
 <p>AIRBORNE: ${this.utc(this.flt.ab)}Z</p>
-<p>================================</p>
+<p>=============================</p>
 <p><strong>LDM</strong></p>
 <p>8Y${this.ac.flt}/${this.dof}. RPC${this.ac.reg}.Y180.${this.ac.cockpit}/${
         this.ac.cabin
       }+${this.ac.fm}FM</p>
 <br/>
-<p>CTU ${this.pax.adt}/${this.pax.chd}/${this.pax.inf} TTL:${this.tob}</p>
+<p>${this.ac.from.toUpperCase()} ${this.pax.adt}/${this.pax.chd}/${this.pax.inf} TTL:${this.tob}</p>
 <p>1/${this.h1_weight} 3/${this.h3_weight} 4/${this.h4_weight} 5/${
         this.h5_weight
       }</p>
@@ -290,6 +320,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+/* .info-container /deep/ .ant-card-body {
+  padding: 4px;
+} */
 .tb-info {
   font-weight: bold;
   text-align: left;
@@ -298,8 +331,7 @@ export default {
 }
 
 table {
-  border: 1px solid #ccc;
-  width: 100%;
+  border: 1px solid #eee;
 }
 
 th {
@@ -307,7 +339,7 @@ th {
 }
 
 td {
-  padding: 5px;
+  padding: 5px 4px 5px 4px;
 }
 td input {
   /* width: 100%; */
@@ -322,10 +354,21 @@ td input {
   }
 }
 
-.pax-bag {
+.tb-2 {
   display: flex;
+  table:first-child {
+    width: 56%;
+  }
   table:last-child {
-    margin-left: 20px;
+    width: 43%;
+    margin-left: 1%;
+  }
+}
+
+.tb-3 {
+  table:last-child {
+    width: 60%;
+    margin-top: 10px;
   }
 }
 
@@ -333,7 +376,6 @@ td input {
   display: flex;
   flex-direction: column;
   padding: 20px;
-  /* align-items: center; */
   margin-top: 30px;
   .load-info{
     display: flex;
