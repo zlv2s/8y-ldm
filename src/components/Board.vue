@@ -3,54 +3,54 @@
     <a-card title="A/C INFO">
       <p class="tb-info">Notice: Change the default value if needed</p>
       <div class="tb-3">
-          <table class="tb-ac">
-        <thead>
-          <tr>
-            <th>FLT</th>
-            <th>REG</th>
-            <th>FROM</th>
-            <th>TO</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <a-input size="small" v-model="ac.flt" />
-            </td>
-            <td>
-              <a-input size="small" v-model="ac.reg" />
-            </td>
-            <td>
-              <a-input size="small" v-model="ac.from" />
-            </td>
-            <td>
-              <a-input size="small" v-model="ac.to" />
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <table>
-        <thead>
-          <tr>
-            <th>PIC</th>
-            <th>CBN</th>
-            <th>FM</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <a-input size="small" v-model="ac.cockpit" />
-            </td>
-            <td>
-              <a-input size="small" v-model="ac.cabin" />
-            </td>
-            <td>
-              <a-input size="small" v-model="ac.fm" />
-            </td>
-          </tr>
-        </tbody>
-      </table>
+        <table class="tb-ac">
+          <thead>
+            <tr>
+              <th>FLT</th>
+              <th>REG</th>
+              <th>FROM</th>
+              <th>TO</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <a-input size="small" v-model="ac.flt" />
+              </td>
+              <td>
+                <a-input size="small" v-model="ac.reg" />
+              </td>
+              <td>
+                <a-input size="small" v-model="ac.from" />
+              </td>
+              <td>
+                <a-input size="small" v-model="ac.to" />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <table>
+          <thead>
+            <tr>
+              <th>PIC</th>
+              <th>CBN</th>
+              <th>FM</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <a-input size="small" v-model="ac.cockpit" />
+              </td>
+              <td>
+                <a-input size="small" v-model="ac.cabin" />
+              </td>
+              <td>
+                <a-input size="small" v-model="ac.fm" />
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </a-card>
 
@@ -58,45 +58,45 @@
       <p class="tb-info">Notice: Fill with Integer Value</p>
       <div class="tb-2">
         <table class="tb-pax">
-        <thead>
-          <tr>
-            <th>ADT</th>
-            <th>CHD</th>
-            <th>INF</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <a-input size="small" v-model="pax.adt" />
-            </td>
-            <td>
-              <a-input size="small" v-model="pax.chd" />
-            </td>
-            <td>
-              <a-input size="small" v-model="pax.inf" />
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <table class="tb-bag">
-        <thead>
-          <tr>
-            <th>PCS</th>
-            <th>KG</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <a-input size="small" v-model="bag.pcs" />
-            </td>
-            <td>
-              <a-input size="small" v-model="bag.weight" />
-            </td>
-          </tr>
-        </tbody>
-      </table>
+          <thead>
+            <tr>
+              <th>ADT</th>
+              <th>CHD</th>
+              <th>INF</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <a-input size="small" v-model="pax.adt" />
+              </td>
+              <td>
+                <a-input size="small" v-model="pax.chd" />
+              </td>
+              <td>
+                <a-input size="small" v-model="pax.inf" />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <table class="tb-bag">
+          <thead>
+            <tr>
+              <th>PCS</th>
+              <th>KG</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <a-input size="small" v-model="bag.pcs" />
+              </td>
+              <td>
+                <a-input size="small" v-model="bag.weight" />
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </a-card>
 
@@ -173,7 +173,13 @@
     <div class="info-wrapper">
       <div class="load-info" v-html="this.loadInfo"></div>
     </div>
-    <a-modal :title="mvtTitle" v-model="visible" @ok="handleOk" okText="Copy" style="top: 20px;">
+    <a-modal
+      :title="mvtTitle"
+      v-model="visible"
+      @ok="handleOk"
+      okText="Copy"
+      style="top: 20px;"
+    >
       <div v-html="loadInfo" id="loadInfo"></div>
     </a-modal>
   </div>
@@ -252,7 +258,9 @@ export default {
       let yearNum = dateArr[2]
       dateArr[1] = dateMap[monthNum]
       dateArr[2] = yearNum.substr(2, 2)
-      return `MVT/LDM 8Y${this.ac.flt} ${dateArr.join('')} ${this.ac.from.toUpperCase()}-${this.ac.to.toUpperCase()}`
+      return `MVT/LDM 8Y${this.ac.flt} ${dateArr.join(
+        ''
+      )} ${this.ac.from.toUpperCase()}-${this.ac.to.toUpperCase()}`
     }
   },
   methods: {
@@ -279,8 +287,12 @@ export default {
       }
       this.loadInfo = `
 <p><strong>MVT</strong></p>
-<p>8Y${this.ac.flt}/${this.dof} RPC${this.ac.reg}.${this.ac.from.toUpperCase()}</p>
-<p>AD${this.utc(this.flt.pb)}/${this.utc(this.flt.ab)} ${this.utc(this.flt.eta)}${this.ac.to.toUpperCase()}</p>
+<p>8Y${this.ac.flt}/${this.dof} RPC${
+        this.ac.reg
+      }.${this.ac.from.toUpperCase()}</p>
+<p>AD${this.utc(this.flt.pb)}/${this.utc(this.flt.ab)} ${this.utc(
+        this.flt.eta
+      )}${this.ac.to.toUpperCase()}</p>
 <p>PAX ${this.tob}</p>
 <br/>
 <p>CREW: ${this.ac.cockpit}/${this.ac.cabin}+${this.ac.fm}FM  PAX: ${
@@ -296,7 +308,9 @@ export default {
         this.ac.cabin
       }+${this.ac.fm}FM</p>
 <br/>
-<p>${this.ac.from.toUpperCase()} ${this.pax.adt}/${this.pax.chd}/${this.pax.inf} TTL:${this.tob}</p>
+<p>${this.ac.from.toUpperCase()} ${this.pax.adt}/${this.pax.chd}/${
+        this.pax.inf
+      } TTL:${this.tob}</p>
 <p>1/${this.h1_weight} 3/${this.h3_weight} 4/${this.h4_weight} 5/${
         this.h5_weight
       }</p>
@@ -342,7 +356,6 @@ td {
   padding: 5px 4px 5px 4px;
 }
 td input {
-  /* width: 100%; */
   text-align: center;
 }
 
@@ -377,7 +390,7 @@ td input {
   flex-direction: column;
   padding: 20px;
   margin-top: 30px;
-  .load-info{
+  .load-info {
     display: flex;
     flex-direction: column;
   }
