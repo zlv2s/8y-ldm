@@ -49,8 +49,8 @@
     <a-row>
       <a-col :span="24">
         <p class="info">
-          <span id="busuanzi_container_site_pv">
-            本站总访问量<span id="busuanzi_value_site_pv"></span>次
+          <span id="busuanzi_container_site_pv" style='display:none'>
+            Site been viewed <span id="busuanzi_value_site_pv"></span> times
           </span>
         </p>
       </a-col>
