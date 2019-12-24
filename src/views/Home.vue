@@ -48,7 +48,11 @@
     </a-row>
     <a-row>
       <a-col :span="24">
-        <p class="info" v-html="info"></p>
+        <p class="info">
+          <span id="busuanzi_container_site_pv">
+            本站总访问量<span id="busuanzi_value_site_pv"></span>次
+          </span>
+        </p>
       </a-col>
     </a-row>
   </div>
@@ -58,7 +62,7 @@
 import Board from '@/components/Board.vue'
 import Header from '@/components/Header.vue'
 import { getFltStatus } from '@/api'
-import { getCookie, setCookie, fixDate } from '@/utils'
+// import { getCookie, setCookie, fixDate } from '@/utils'
 
 export default {
   name: 'home',
@@ -78,22 +82,22 @@ export default {
         // todo
       }
     })
-    this.pvTj()
+    // this.pvTj()
   },
   methods: {
-    pvTj() {
-      let now = new Date()
-      fixDate(now)
-      now.setTime(now.getTime() + 365 * 24 * 60 * 60 * 1000)
-      let visits = getCookie('counter')
-      if (!visits) {
-        visits = 1
-      } else {
-        visits = parseInt(visits) + 1
-      }
-      setCookie('counter', visits, now)
-      this.info = `您是到访的第${visits}位用户！`
-    }
+    // pvTj() {
+    //   let now = new Date()
+    //   fixDate(now)
+    //   now.setTime(now.getTime() + 365 * 24 * 60 * 60 * 1000)
+    //   let visits = getCookie('counter')
+    //   if (!visits) {
+    //     visits = 1
+    //   } else {
+    //     visits = parseInt(visits) + 1
+    //   }
+    //   setCookie('counter', visits, now)
+    //   this.info = `您是到访的第${visits}位用户！`
+    // }
   }
 }
 </script>

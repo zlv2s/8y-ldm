@@ -334,9 +334,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-/* .info-container /deep/ .ant-card-body {
-  padding: 4px;
-} */
 .tb-info {
   font-weight: bold;
   text-align: left;
