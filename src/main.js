@@ -1,7 +1,18 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-import { Row, Col, Button, Card, BackTop, Modal, message, Icon, Input } from 'ant-design-vue'
+import '@/styles/index.scss'
+import {
+  Row,
+  Col,
+  Button,
+  Card,
+  BackTop,
+  Modal,
+  message,
+  Icon,
+  Input
+} from 'ant-design-vue'
 
 Vue.use(Row)
 Vue.use(Col)
@@ -19,7 +30,7 @@ var _hmt = []
 // 必须把_hmt挂载到window下，否则找不到
 window._hmt = _hmt
 
-var baiduTongJi = function () {
+var baiduTongJi = function() {
   var hm = document.createElement('script')
   hm.src = 'https://hm.baidu.com/hm.js?d27ba259bc648899db93e6bdc54fc7c2'
   var s = document.getElementsByTagName('script')[0]

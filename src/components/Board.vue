@@ -1,6 +1,7 @@
 <template>
   <div class="info-container">
-    <a-card title="A/C INFO">
+    <a-card>
+      <i class="iconfont icon-feiji" slot="title"></i>
       <p class="tb-info">Notice: Change the default value if needed</p>
       <div class="tb-3">
         <table class="tb-ac">
@@ -54,7 +55,8 @@
       </div>
     </a-card>
 
-    <a-card title="PAX & BAG" style="margin-top:10px">
+    <a-card style="margin-top:10px">
+      <i class="iconfont icon-lvke-mian" slot="title"></i>
       <p class="tb-info">Notice: Fill with Integer Value</p>
       <div class="tb-2">
         <table class="tb-pax">
@@ -100,7 +102,8 @@
       </div>
     </a-card>
 
-    <a-card title="CARGO" style="margin-top:10px">
+    <a-card style="margin-top:10px">
+      <i class="iconfont icon-hanglixiang" slot="title"></i>
       <p class="tb-info">Notice: Fill with pcs, not weight</p>
       <table class="tb-cargo">
         <thead>
@@ -130,7 +133,8 @@
       </table>
     </a-card>
 
-    <a-card title="TIMELINE" style="margin-top:10px">
+    <a-card style="margin-top:10px">
+      <i class="iconfont icon-shijian" slot="title"></i>
       <p class="tb-info">Notice: Fill with LOCAL TIME, eg: 0335</p>
       <table class="tb-flt">
         <thead>
@@ -186,10 +190,11 @@
 </template>
 
 <script>
-import { emptyObj, selectText, dateMap } from '@/utils'
+import { emptyObj, selectText, dateMap, icon } from '@/utils'
 export default {
   data() {
     return {
+      icon,
       visible: false,
       loadInfo: '',
       ac: {

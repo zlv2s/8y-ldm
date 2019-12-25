@@ -44,6 +44,14 @@ export const dateMap = {
   '12': 'DEC'
 }
 
+export const icon = {
+  flt: '<i class="iconfont icon-flight"></i>',
+  pax: '<i class="iconfont icon-icon-lvke-mian"></i>',
+  bag: '<i class="iconfont icon-hangli"></i>',
+  cargo: '<i class="iconfont icon-huowu"></i>',
+  timeline: '<i class="iconfont icon-time_line"></i>'
+}
+
 // *cookie
 let caution = false
 export function setCookie(name, value, expires, path, domain, secure) {
