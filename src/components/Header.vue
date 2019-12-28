@@ -5,13 +5,10 @@
     </a>
     <div class="hd-tool">
       <a href="https://www.flightradar24.com/12.23,121.75/8" target="_blank">
-        <i class="iconfont icon-leida"></i>
+        <i class="iconfont icon-iconset0398"></i>
       </a>
       <a href="https://www.planespotters.net/search" target="_blank">
-        <i class="iconfont icon-qifei"></i
-      ></a>
-      <a href="https://www.aircn.org/toolbox/metar.php" target="_blank">
-        <i class="iconfont icon-qixiangzhan"></i
+        <i class="iconfont icon-fj_qifei_a"></i
       ></a>
     </div>
     <div class="utc-time" v-text="utc"></div>
@@ -51,10 +48,12 @@ export default {
   /* margin: 10px; */
 }
 .header-info {
+  background: #eee;
   display: flex;
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid #ddd;
+
   .hd-tool {
     a {
       margin-right: 4px;
@@ -72,7 +71,8 @@ export default {
 /* laptop */
 @media (min-width: 750px) {
   .header-info {
-    margin-bottom: 20px;
+    padding: 15px;
+    justify-content: space-around;
     .logo {
       height: 30px;
     }
@@ -85,6 +85,8 @@ export default {
 /* handphone */
 @media (max-width: 750px) {
   .header-info {
+    padding-left: 5px;
+    padding-right: 5px;
     margin-bottom: 10px;
     .logo {
       height: 20px;

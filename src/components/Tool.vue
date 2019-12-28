@@ -31,6 +31,9 @@
             >Aircraft Information Inquiry(2)</a
           >
         </li>
+        <li>
+          <a href="https://www.radarbox24.com/" target="_blank">AirNav</a>
+        </li>
       </ul>
     </a-card>
   </div>
@@ -46,5 +49,8 @@ export default {}
   flex-direction: column;
   align-items: flex-start;
   margin-left: 12%;
+  h2 {
+    text-align: center;
+  }
 }
 </style>

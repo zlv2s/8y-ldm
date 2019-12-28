@@ -5,22 +5,24 @@
         <Header />
       </a-col>
     </a-row>
-    <a-row>
-      <a-col :xs="0" :md="8" :lg="8">
-        <Info />
-      </a-col>
-      <a-col :xs="24" :md="8" :lg="8">
-        <Board />
-      </a-col>
-      <a-col :xs="0" :md="8" :lg="8">
-        <Tool />
-      </a-col>
-    </a-row>
-    <a-row>
-      <a-col :span="24">
-        <Footer />
-      </a-col>
-    </a-row>
+    <div class="content">
+      <a-row>
+        <a-col :xs="0" :md="8" :lg="8">
+          <Info />
+        </a-col>
+        <a-col :xs="24" :md="8" :lg="8">
+          <Board />
+        </a-col>
+        <a-col :xs="0" :md="8" :lg="8">
+          <Tool />
+        </a-col>
+      </a-row>
+      <a-row>
+        <a-col :span="24">
+          <Footer />
+        </a-col>
+      </a-row>
+    </div>
   </div>
 </template>
 
@@ -75,7 +77,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.outer-container {
-  padding: 8px;
+@media (min-width: 750px) {
+  .content {
+    padding: 20px 15px 20px 15px;
+  }
+}
+
+@media (max-width: 750px) {
+  .content {
+    padding: 5px;
+  }
 }
 </style>
