@@ -1,45 +1,96 @@
 <template>
-  <div class="title">
-    <a href="http://panpacificair.com/" target="_blank">
+  <div class="header-info">
+    <a class="logo" href="http://panpacificair.com/" target="_blank">
       <img src="../assets/logo.png" />
     </a>
-    <h1>MVT/LDM GENERATOR(V.1.3)</h1>
+    <div class="hd-tool">
+      <a href="https://www.flightradar24.com/12.23,121.75/8" target="_blank">
+        <i class="iconfont icon-leida"></i>
+      </a>
+      <a href="https://www.planespotters.net/search" target="_blank">
+        <i class="iconfont icon-qifei"></i
+      ></a>
+      <a href="https://www.aircn.org/toolbox/metar.php" target="_blank">
+        <i class="iconfont icon-qixiangzhan"></i
+      ></a>
+    </div>
+    <div class="utc-time" v-text="utc"></div>
   </div>
 </template>
 
 <script>
-export default {}
+export default {
+  data() {
+    return {
+      utc: ''
+    }
+  },
+  created() {
+    if (this.timerId) {
+      clearInterval(this.timerId)
+    }
+    this.timerId = setInterval(() => {
+      this.utcTime()
+    }, 1000)
+  },
+  methods: {
+    utcTime() {
+      this.utc = new Date().toUTCString().replace('GMT', '(UTC)')
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
-.title {
-  margin-bottom: 20px;
-
-  @media (min-width: 750px) {
+.utc-time {
+  vertical-align: middle;
+  color: #2870df;
+  height: 43px;
+  line-height: 43px;
+  text-align: center;
+  /* margin: 10px; */
+}
+.header-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+  .hd-tool {
     a {
-      display: inline-block;
-      height: 40px;
-      position: absolute;
-      left: 16%;
-      transform: translateX(-50%);
-      img {
-        height: 40px;
-      }
+      margin-right: 4px;
     }
-  }
-
-  h1 {
-    text-align: center;
   }
 }
 
-@media (max-width: 750px){
-  .title {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    img {
+.logo {
+  display: block;
+  img {
+    height: 100%;
+  }
+}
+
+/* laptop */
+@media (min-width: 750px) {
+  .header-info {
+    margin-bottom: 20px;
+    .logo {
       height: 30px;
+    }
+    .utc-time {
+      font-size: 1rem;
+    }
+  }
+}
+
+/* handphone */
+@media (max-width: 750px) {
+  .header-info {
+    margin-bottom: 10px;
+    .logo {
+      height: 20px;
+    }
+    .utc-time {
+      font-size: 0.6rem;
     }
   }
 }
