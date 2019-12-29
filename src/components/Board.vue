@@ -1,6 +1,6 @@
 <template>
   <div class="info-container">
-    <h2>mvt/ldm generator</h2>
+    <h2 class="card-title-name">mvt/ldm generator</h2>
     <a-card>
       <i class="iconfont icon-feiji" slot="title"></i>
       <p class="tb-info">Notice: Change the default value if needed</p>
@@ -340,14 +340,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.info-container {
-  h2 {
-    text-transform: uppercase;
-    text-align: center;
-    margin-bottom: 20px;
-  }
-}
-
 .tb-info {
   font-weight: bold;
   text-align: left;

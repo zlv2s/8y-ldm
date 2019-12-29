@@ -12,7 +12,7 @@ import {
   message,
   Icon,
   Input,
-  Form
+  Table
 } from 'ant-design-vue'
 
 Vue.use(Row)
@@ -23,7 +23,7 @@ Vue.use(BackTop)
 Vue.use(Modal)
 Vue.use(Icon)
 Vue.use(Input)
-Vue.use(Form)
+Vue.use(Table)
 Vue.prototype.$message = message
 
 Vue.config.productionTip = false

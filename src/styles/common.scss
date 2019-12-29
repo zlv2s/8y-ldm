@@ -7,6 +7,23 @@ ul {
   list-style: none;
 }
 
+a {
+
+  &:link,
+  &:active,
+  &:hover,
+  &:visited {
+    text-decoration: none;
+  }
+}
+
+.card-title-name {
+  text-align: center;
+  font-size: 1rem;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
 .clearfix {
   &::after {
     display: block;

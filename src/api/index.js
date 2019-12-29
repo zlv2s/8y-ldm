@@ -22,20 +22,57 @@ import axios from 'axios'
 
 // const url1 = 'https://www.flightradar24.com/v1/search/web/find?query=aav824&limit=10'
 
-// const url2 = 'https://data-live.flightradar24.com/clickhandler/?version=1.5&flight=2346b270'
+// const url2 = 'https://data-live.flightradar24.com/clickhandler/?version=1.5&flight=23591336'
 // https://static.variflight.com/assets/js/airportlist.js
 
-export function getFltStatus(anum, fnum) {
+// export function getFltStatus({ anum, fnum }) {
+//   return new Promise((resolve, reject) => {
+//     axios({
+//       url: 'https://adsbapi.variflight.com/adsb/index/flightdetail',
+//       params: {
+//         lang: 'zh_CN',
+//         anum,
+//         fnum
+//       }
+//     })
+//       .then(res => {
+//         resolve(res.data)
+//       })
+//       .catch(err => {
+//         reject(err)
+//       })
+//   })
+// }
+
+export function getFltLabel({ fnum }) {
   return new Promise((resolve, reject) => {
     axios({
-      url: 'https://adsbapi.variflight.com/adsb/index/flightdetail',
+      url: '/getId',
       params: {
-        lang: 'zh_CN',
-        anum,
-        fnum
+        query: fnum,
+        limit: 10
       }
     })
       .then(res => {
+        resolve(res.data.results)
+      })
+      .catch(err => {
+        reject(err)
+      })
+  })
+}
+
+export function getFltStatus({ id }) {
+  return new Promise((resolve, reject) => {
+    axios({
+      url: '/getFltDetail',
+      params: {
+        version: 1.5,
+        flight: id
+      }
+    })
+      .then(res => {
+        // console.log(res.data)
         resolve(res.data)
       })
       .catch(err => {

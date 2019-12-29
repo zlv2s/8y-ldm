@@ -4,12 +4,15 @@
       <img src="../assets/logo.png" />
     </a>
     <div class="hd-tool">
-      <a href="https://www.flightradar24.com/12.23,121.75/8" target="_blank">
+      <a href="https://www.flightradar24.com/" target="_blank">
         <i class="iconfont icon-iconset0398"></i>
       </a>
+      <a href="https://pilotweb.nas.faa.gov/PilotWeb/" target="_blank">
+        <i class="iconfont icon-tongzhitonggao"></i>
+      </a>
       <a href="https://www.planespotters.net/search" target="_blank">
-        <i class="iconfont icon-fj_qifei_a"></i
-      ></a>
+        <i class="iconfont icon-fj_qifei_a"></i>
+      </a>
     </div>
     <div class="utc-time" v-text="utc"></div>
   </div>
@@ -19,7 +22,7 @@
 export default {
   data() {
     return {
-      utc: ''
+      utc: new Date().toUTCString().replace('GMT', '(UTC)')
     }
   },
   created() {
@@ -27,11 +30,11 @@ export default {
       clearInterval(this.timerId)
     }
     this.timerId = setInterval(() => {
-      this.utcTime()
+      this.getUTCTime()
     }, 1000)
   },
   methods: {
-    utcTime() {
+    getUTCTime() {
       this.utc = new Date().toUTCString().replace('GMT', '(UTC)')
     }
   }
@@ -39,14 +42,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.utc-time {
-  vertical-align: middle;
-  color: #2870df;
-  height: 43px;
-  line-height: 43px;
-  text-align: center;
-  /* margin: 10px; */
-}
 .header-info {
   background: #eee;
   display: flex;
@@ -54,17 +49,25 @@ export default {
   align-items: center;
   border-bottom: 1px solid #ddd;
 
+  .logo {
+    display: block;
+    img {
+      height: 100%;
+    }
+  }
+
   .hd-tool {
     a {
       margin-right: 4px;
     }
   }
-}
 
-.logo {
-  display: block;
-  img {
-    height: 100%;
+  .utc-time {
+    vertical-align: middle;
+    color: #2870df;
+    height: 43px;
+    line-height: 43px;
+    text-align: center;
   }
 }
 
@@ -72,9 +75,11 @@ export default {
 @media (min-width: 750px) {
   .header-info {
     padding: 15px;
-    justify-content: space-around;
     .logo {
       height: 30px;
+    }
+    .hd-tool {
+      margin-left: -60%;
     }
     .utc-time {
       font-size: 1rem;
@@ -91,8 +96,11 @@ export default {
     .logo {
       height: 20px;
     }
+    .hd-tool {
+      margin-left: -8%;
+    }
     .utc-time {
-      font-size: 0.6rem;
+      font-size: 0.7rem;
     }
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <div class="tool-wrapper">
-    <h2>Helper</h2>
+    <h2 class="card-title-name">Helper</h2>
     <a-card :bordered="false">
       <ul>
         <li><a href="/weather">Terminal Aerodrome Forecasts (TAFs)</a></li>
@@ -34,6 +34,11 @@
         <li>
           <a href="https://www.radarbox24.com/" target="_blank">AirNav</a>
         </li>
+        <li>
+          <a href="https://pilotweb.nas.faa.gov/PilotWeb/" target="_blank"
+            >FAA Notam</a
+          >
+        </li>
       </ul>
     </a-card>
   </div>
@@ -47,10 +52,6 @@ export default {}
 .tool-wrapper {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  margin-left: 12%;
-  h2 {
-    text-align: center;
-  }
+  align-items: center;
 }
 </style>

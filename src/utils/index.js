@@ -106,3 +106,10 @@ export function fixDate(date) {
     date.setTime(date.getTime() - skew)
   }
 }
+
+export function secToTime(timeStr) {
+  const time = new Date(timeStr * 1000)
+  let hr = '' + time.getHours()
+  let mins = '' + time.getMinutes()
+  return `${hr.padStart(2, '0')}:${mins.padStart(2, '0')}`
+}
