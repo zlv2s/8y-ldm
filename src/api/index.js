@@ -55,7 +55,7 @@ export function getFltLabel({ fnum }) {
       url: `/api/flt/getFltId/${fnum}`
     })
       .then(res => {
-        resolve(res.data.results)
+        resolve(res.data)
       })
       .catch(err => {
         reject(err)

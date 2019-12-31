@@ -82,10 +82,13 @@ export default {
       this.footer = '* 只能查询临近起飞前的航班'
       try {
         const fRes = await getFltLabel({ fnum: v })
-        if (fRes.length !== 0) {
+        if (fRes.data.length !== 0) {
+          // console.log({ fRes })
           // eslint-disable-next-line camelcase
-          const { callsign, schd_from, schd_to } = fRes[0]['detail']
-          const res = await getFltStatus({ id: fRes[0]['id'] })
+          const { callsign, schd_from, schd_to } = fRes['data'][0]['detail']
+          const resolvedRet = await getFltStatus({ id: fRes['data'][0]['id'] })
+          // console.log({ resolvedRet })
+          const res = resolvedRet['data']
           if (res['time']) {
             const { departure: std, arrival: sta } = res['time']['scheduled']
             const { departure: atd } = res['time']['real']
@@ -112,6 +115,7 @@ export default {
         }
       } catch (error) {
         this.footer = error.message
+        this.loading = false
       }
     },
     fromatTime(t1, t2) {
