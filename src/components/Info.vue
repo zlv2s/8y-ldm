@@ -87,25 +87,30 @@ export default {
           // eslint-disable-next-line camelcase
           const { callsign, schd_from, schd_to } = fRes['data'][0]['detail']
           const resolvedRet = await getFltStatus({ id: fRes['data'][0]['id'] })
-          // console.log({ resolvedRet })
-          const res = resolvedRet['data']
-          if (res['time']) {
-            const { departure: std, arrival: sta } = res['time']['scheduled']
-            const { departure: atd } = res['time']['real']
-            const { arrival: eta } = res['time']['estimated']
-            const flt = {
-              fnum: callsign,
-              forg: schd_from,
-              fdst: schd_to,
-              actualDeptime: this.fromatTime(std, atd),
-              estimatedArrtime: this.fromatTime(sta, eta),
-              key: Date.now()
+          if (resolvedRet.code !== 404) {
+            const res = resolvedRet['data']
+            if (res['time']) {
+              const { departure: std, arrival: sta } = res['time']['scheduled']
+              const { departure: atd } = res['time']['real']
+              const { arrival: eta } = res['time']['estimated']
+              const flt = {
+                fnum: callsign,
+                forg: schd_from,
+                fdst: schd_to,
+                actualDeptime: this.fromatTime(std, atd),
+                estimatedArrtime: this.fromatTime(sta, eta),
+                key: Date.now()
+              }
+              this.fdetail = [flt]
+              this.loading = false
+            } else {
+              this.fdetail = []
+              this.footer = '* 未查到该航班信息'
+              this.loading = false
             }
-            this.fdetail = [flt]
-            this.loading = false
           } else {
             this.fdetail = []
-            this.footer = '* 未查到该航班信息'
+            this.footer = '* 数据还未更新'
             this.loading = false
           }
         } else {
@@ -119,7 +124,7 @@ export default {
       }
     },
     fromatTime(t1, t2) {
-      return `${t1 ? secToTime(t1) : '-'}/${t2 ? secToTime(t2) : '-'}`
+      return `${t1 ? secToTime(t1) : '--'}/${t2 ? secToTime(t2) : '--'}`
     }
   }
 }
