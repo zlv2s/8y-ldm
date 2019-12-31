@@ -4,19 +4,11 @@
     <a-card :bordered="false">
       <div class="form-wrapper">
         <div class="input-wrapper">
-          <a-input
-            style="width: 35%"
-            placeholder="Flight Number"
-            v-model="fnum"
+          <a-input-search
+            placeholder="输入航班号"
+            style="width: 200px"
+            @search="searchFlt"
           />
-          <a-input
-            style="width: 35%"
-            placeholder="AC Registration"
-            v-model="anum"
-          />
-        </div>
-        <div>
-          <a-button @click="searchFlt" shape="circle" icon="search" />
         </div>
       </div>
       <div class="search-result">
@@ -28,6 +20,11 @@
           align="center"
           :loading="loading"
         >
+          <template slot="footer">
+            <p style="text-align:left;font-style:italic;color:red">
+              {{ footer }}
+            </p>
+          </template>
         </a-table>
       </div>
     </a-card>
@@ -57,7 +54,7 @@ const columns = [
     title: '起飞时间',
     dataIndex: 'actualDeptime',
     customRender(text, record, index) {
-      return secToTime(text)
+      return text
     },
     key: '4'
   },
@@ -65,7 +62,7 @@ const columns = [
     title: '落地时间',
     dataIndex: 'estimatedArrtime',
     customRender(text, record, index) {
-      return secToTime(text)
+      return text
     },
     key: '5'
   }
@@ -74,25 +71,51 @@ export default {
   data() {
     return {
       columns,
-      fnum: '8Y824',
-      anum: 'RPC7937',
       fdetail: [],
-      loading: false
+      loading: false,
+      footer: ' * 只能查询临近起飞前的航班'
     }
   },
   methods: {
-    async searchFlt() {
+    async searchFlt(v) {
       this.loading = true
-      const fRes = await getFltLabel({ fnum: this.fnum })
-      const res = await getFltStatus({ id: fRes[0]['id'] })
-      console.log(res['time'])
-      // getFltLabel({ anum: this.anum, fnum: this.fnum }).then(res => {
-      //   if (res.code === 200) {
-      //     this.loading = false
-      //     res.data['key'] = Date.now()
-      //     this.fdetail = [{ ...res.data }]
-      //   }
-      // })
+      this.footer = '* 只能查询临近起飞前的航班'
+      try {
+        const fRes = await getFltLabel({ fnum: v })
+        if (fRes.length !== 0) {
+          // eslint-disable-next-line camelcase
+          const { callsign, schd_from, schd_to } = fRes[0]['detail']
+          const res = await getFltStatus({ id: fRes[0]['id'] })
+          if (res['time']) {
+            const { departure: std, arrival: sta } = res['time']['scheduled']
+            const { departure: atd } = res['time']['real']
+            const { arrival: eta } = res['time']['estimated']
+            const flt = {
+              fnum: callsign,
+              forg: schd_from,
+              fdst: schd_to,
+              actualDeptime: this.fromatTime(std, atd),
+              estimatedArrtime: this.fromatTime(sta, eta),
+              key: Date.now()
+            }
+            this.fdetail = [flt]
+            this.loading = false
+          } else {
+            this.fdetail = []
+            this.footer = '* 未查到该航班信息'
+            this.loading = false
+          }
+        } else {
+          this.fdetail = []
+          this.footer = '* 未查到该航班信息'
+          this.loading = false
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    fromatTime(t1, t2) {
+      return `${t1 ? secToTime(t1) : '-'}/${t2 ? secToTime(t2) : '-'}`
     }
   }
 }
@@ -100,20 +123,12 @@ export default {
 
 <style lang="scss" scoped>
 .form-wrapper {
-  display: flex;
-  justify-content: space-between;
-  padding-left: 8px;
-  padding-right: 5px;
   .input-wrapper {
-    text-align: left;
-    input:first-child {
-      margin-right: 30px;
-    }
+    text-align: center;
   }
 }
 
 .search-result {
-  text-align-last: left;
   margin-top: 30px;
   .search-hd {
     padding: 10px;

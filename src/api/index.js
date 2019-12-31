@@ -20,6 +20,8 @@ import axios from 'axios'
 //   })
 // }
 
+// https://adsbapi.variflight.com/adsb/index/flightdetail?lang=zh_CN&fnum=8y823&anum=rpc7937
+
 // const url1 = 'https://www.flightradar24.com/v1/search/web/find?query=aav824&limit=10'
 
 // const url2 = 'https://data-live.flightradar24.com/clickhandler/?version=1.5&flight=23591336'
