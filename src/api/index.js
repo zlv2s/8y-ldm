@@ -46,14 +46,13 @@ import axios from 'axios'
 //   })
 // }
 
+const baseURL = 'https://nodespider-api.herokuapp.com'
+
 export function getFltLabel({ fnum }) {
   return new Promise((resolve, reject) => {
     axios({
-      url: '/getId',
-      params: {
-        query: fnum,
-        limit: 10
-      }
+      baseURL,
+      url: `/api/flt/getFltId/${fnum}`
     })
       .then(res => {
         resolve(res.data.results)
@@ -67,14 +66,10 @@ export function getFltLabel({ fnum }) {
 export function getFltStatus({ id }) {
   return new Promise((resolve, reject) => {
     axios({
-      url: '/getFltDetail',
-      params: {
-        version: 1.5,
-        flight: id
-      }
+      baseURL,
+      url: `/api/flt/getFltDetail/${id}`
     })
       .then(res => {
-        // console.log(res.data)
         resolve(res.data)
       })
       .catch(err => {
