@@ -21,6 +21,11 @@ const routes = [
     component: () => import('../views/Weather.vue')
   },
   {
+    path: '/time',
+    name: 'Time',
+    component: () => import('../views/Time.vue')
+  },
+  {
     path: '*',
     redirect: '/404'
   }

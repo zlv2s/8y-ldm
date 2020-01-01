@@ -7,13 +7,13 @@
     </a-row>
     <div class="content">
       <a-row>
-        <a-col :xs="0" :md="8" :lg="8">
+        <a-col :xs="0" :md="9" :lg="9">
           <Info />
         </a-col>
         <a-col :xs="24" :md="8" :lg="8">
           <Board />
         </a-col>
-        <a-col :xs="0" :md="8" :lg="8">
+        <a-col :xs="0" :md="7" :lg="7">
           <Tool />
         </a-col>
       </a-row>

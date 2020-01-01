@@ -1,6 +1,8 @@
 <template>
   <div class="info-wrapper">
-    <h2 class="card-title-name">flight status</h2>
+    <slot name="title">
+      <!-- <h2 class="card-title-name">flight status</h2> -->
+    </slot>
     <a-card :bordered="false">
       <div class="form-wrapper">
         <div class="input-wrapper">
@@ -13,12 +15,11 @@
       </div>
       <div class="search-result">
         <a-table
-          size="small"
           :columns="columns"
           :dataSource="fdetail"
           :pagination="false"
-          align="center"
           :loading="loading"
+          bordered
         >
           <template slot="footer">
             <p style="text-align:left;font-style:italic;color:red">
@@ -36,35 +37,40 @@ import { getFltLabel, getFltStatus } from '@/api'
 import { secToTime } from '@/utils'
 const columns = [
   {
-    title: '航班号',
+    title: 'FLIGHT',
     dataIndex: 'fnum',
-    key: '1'
+    key: '1',
+    align: 'center'
   },
   {
-    title: '出发',
+    title: 'DEP',
     dataIndex: 'forg',
-    key: '2'
+    key: '2',
+    align: 'center'
   },
   {
-    title: '到达',
+    title: 'ARR',
     dataIndex: 'fdst',
-    key: '3'
+    key: '3',
+    align: 'center'
   },
   {
-    title: '起飞时间',
+    title: 'STD/ATD',
     dataIndex: 'actualDeptime',
     customRender(text, record, index) {
       return text
     },
-    key: '4'
+    key: '4',
+    align: 'center'
   },
   {
-    title: '落地时间',
+    title: 'STA/ETA',
     dataIndex: 'estimatedArrtime',
     customRender(text, record, index) {
       return text
     },
-    key: '5'
+    key: '5',
+    align: 'center'
   }
 ]
 export default {
@@ -102,6 +108,7 @@ export default {
                 key: Date.now()
               }
               this.fdetail = [flt]
+              this.footer = '* 数据获取成功'
               this.loading = false
             } else {
               this.fdetail = []
@@ -124,13 +131,17 @@ export default {
       }
     },
     fromatTime(t1, t2) {
-      return `${t1 ? secToTime(t1) : '--'}/${t2 ? secToTime(t2) : '--'}`
+      return `${t1 ? secToTime(t1) : '--'}<br/>${t2 ? secToTime(t2) : '--'}`
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.info-wrapper /deep/ .ant-card-body {
+  padding-top: 0;
+}
+
 .form-wrapper {
   .input-wrapper {
     text-align: center;

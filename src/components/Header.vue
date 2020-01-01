@@ -13,6 +13,9 @@
       <a href="https://www.planespotters.net/search" target="_blank">
         <i class="iconfont icon-fj_qifei_a"></i>
       </a>
+      <a href="/time" target="_blank" class="time-board">
+        <i class="iconfont icon-shizhong"></i>
+      </a>
     </div>
     <div class="utc-time" v-text="utc"></div>
   </div>
@@ -80,10 +83,16 @@ export default {
     }
     .hd-tool {
       margin-left: -60%;
+      a {
+        margin-left: 6px;
+      }
     }
     .utc-time {
       font-size: 1rem;
     }
+  }
+  .time-board {
+    display: none;
   }
 }
 
@@ -97,7 +106,7 @@ export default {
       height: 20px;
     }
     .hd-tool {
-      margin-left: -8%;
+      margin-left: -4%;
     }
     .utc-time {
       font-size: 0.7rem;
