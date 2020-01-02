@@ -131,7 +131,7 @@ export default {
       }
     },
     fromatTime(t1, t2) {
-      return `${t1 ? secToTime(t1) : '--'}<br/>${t2 ? secToTime(t2) : '--'}`
+      return `${t1 ? secToTime(t1) : '--'}/${t2 ? secToTime(t2) : '--'}`
     }
   }
 }

@@ -32,8 +32,6 @@ import Footer from '@/components/Footer.vue'
 import Board from '@/components/Board.vue'
 import Tool from '@/components/Tool.vue'
 import Info from '@/components/Info.vue'
-import { getFltStatus } from '@/api'
-// import { getCookie, setCookie, fixDate } from '@/utils'
 
 export default {
   name: 'home',
@@ -49,30 +47,7 @@ export default {
     Tool,
     Info
   },
-  mounted() {
-    getFltStatus('rpc7937', '8y823').then(res => {
-      if (res.code === 200) {
-        // console.log(res.data)
-        // todo
-      }
-    })
-    // this.pvTj()
-  },
-  methods: {
-    // pvTj() {
-    //   let now = new Date()
-    //   fixDate(now)
-    //   now.setTime(now.getTime() + 365 * 24 * 60 * 60 * 1000)
-    //   let visits = getCookie('counter')
-    //   if (!visits) {
-    //     visits = 1
-    //   } else {
-    //     visits = parseInt(visits) + 1
-    //   }
-    //   setCookie('counter', visits, now)
-    //   this.info = `您是到访的第${visits}位用户！`
-    // }
-  }
+  methods: {}
 }
 </script>
 
