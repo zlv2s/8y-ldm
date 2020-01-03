@@ -12,7 +12,8 @@ import {
   message,
   Icon,
   Input,
-  Table
+  Table,
+  Spin
 } from 'ant-design-vue'
 
 Vue.use(Row)
@@ -24,6 +25,7 @@ Vue.use(Modal)
 Vue.use(Icon)
 Vue.use(Input)
 Vue.use(Table)
+Vue.use(Spin)
 Vue.prototype.$message = message
 
 Vue.config.productionTip = false

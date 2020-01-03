@@ -7,13 +7,15 @@
     </a-row>
     <div class="content">
       <a-row>
-        <a-col :xs="0" :md="9" :lg="9">
-          <Info />
+        <a-col :xs="0" :md="7" :lg="8">
+          <div class="time-wrapper">
+            <MInfo />
+          </div>
         </a-col>
-        <a-col :xs="24" :md="8" :lg="8">
+        <a-col :xs="24" :md="10" :lg="8">
           <Board />
         </a-col>
-        <a-col :xs="0" :md="7" :lg="7">
+        <a-col :xs="0" :md="7" :lg="8">
           <Tool />
         </a-col>
       </a-row>
@@ -31,21 +33,19 @@ import Header from '@/components/Header.vue'
 import Footer from '@/components/Footer.vue'
 import Board from '@/components/Board.vue'
 import Tool from '@/components/Tool.vue'
-import Info from '@/components/Info.vue'
+import MInfo from '@/components/MInfo.vue'
 
 export default {
   name: 'home',
   data() {
-    return {
-      info: ''
-    }
+    return {}
   },
   components: {
     Header,
     Footer,
     Board,
     Tool,
-    Info
+    MInfo
   },
   methods: {}
 }
@@ -55,6 +55,10 @@ export default {
 @media (min-width: 750px) {
   .content {
     padding: 20px 15px 20px 15px;
+    .time-wrapper {
+      padding-left: 14px;
+      padding-right: 14px;
+    }
   }
 }
 

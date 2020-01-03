@@ -1,0 +1,242 @@
+<template>
+  <div class="flt-content">
+    <div class="flt-input">
+      <div class="inner-wrapper">
+        <a-input-search
+          placeholder="请输入航班号"
+          style="width: 200px"
+          @search="searchFlt"
+        />
+        <p class="tips">{{ footer }}</p>
+      </div>
+    </div>
+    <div class="flt-wrapper" :class="{ hidden: isHidden }">
+      <div class="flight-head">
+        <div class="flt-logo">
+          <img :src="fltDetails.logo" alt="logo" />
+        </div>
+        <div class="flt-info">
+          {{ `${fltDetails.name} ${fltDetails.fnum}` }}
+        </div>
+      </div>
+      <div class="flight-body">
+        <div class="city">
+          <div class="depart">
+            <div class="airport">{{ fltDetails.forg }}</div>
+          </div>
+          <div class="arrive">
+            <div class="airport">{{ fltDetails.fdst }}</div>
+          </div>
+        </div>
+        <div class="time">
+          <div class="depart">{{ fltDetails.atd }}</div>
+          <div class="arrive">{{ fltDetails.eta }}</div>
+          <span class="dayspan"></span>
+          <div class="arrow arrow-flight">
+            <i class="iconfont icon-hangban"></i>
+          </div>
+        </div>
+        <div class="plantime">
+          <div class="depart">原计划 {{ fltDetails.std }}</div>
+          <div class="arrive">原计划 {{ fltDetails.sta }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="loading" v-if="loading">
+      <a-spin :indicator="indicator" />
+    </div>
+  </div>
+</template>
+
+<script>
+import { getFltLabel, getFltStatus } from '@/api'
+import { secToTime } from '@/utils'
+export default {
+  data() {
+    return {
+      indicator: <a-icon type="loading" style="font-size: 24px" spin />,
+      loading: false,
+      isHidden: true,
+      footer: '* 只能查询临近起飞前的航班',
+      fltDetails: {
+        name: '',
+        logo: '',
+        fnum: '',
+        forg: '',
+        fdst: '',
+        std: '',
+        atd: '',
+        sta: '',
+        eta: ''
+      }
+    }
+  },
+  methods: {
+    async searchFlt(v) {
+      if (!v) return (this.footer = '* 请输入正确航班号')
+      this.loading = true
+      this.footer = '* 只能查询临近起飞前的航班'
+      try {
+        const fRes = await getFltLabel({ fnum: v })
+        if (fRes.data.length !== 0) {
+          // console.log({ fRes })
+          // eslint-disable-next-line camelcase
+          const { callsign, schd_from, schd_to } = fRes['data'][0]['detail']
+          const resolvedRet = await getFltStatus({ id: fRes['data'][0]['id'] })
+          if (resolvedRet.code !== 404) {
+            const res = resolvedRet['data']
+            if (res['time']) {
+              if (res['airline']) {
+                const { name } = res['airline']
+                this.fltDetails.name = name
+              } else {
+                this.fltDetails.name = '未知'
+              }
+              const { departure: std, arrival: sta } = res['time']['scheduled']
+              const { departure: atd } = res['time']['real']
+              const { arrival: eta } = res['time']['estimated']
+
+              this.fltDetails.fnum = callsign
+              this.fltDetails.logo = `https://pic.c-ctrip.com/AssetCatalog/airline/70/${v
+                .substr(0, 2)
+                .toUpperCase()}.png?v=2`
+              // eslint-disable-next-line camelcase
+              this.fltDetails.forg = `${schd_from || '--'}`
+              // eslint-disable-next-line camelcase
+              this.fltDetails.fdst = `${schd_to || '--'}`
+              this.fltDetails.std = `${std ? secToTime(std) : '--'}`
+              this.fltDetails.atd = `${atd ? secToTime(atd) : '--'}`
+              this.fltDetails.sta = `${sta ? secToTime(sta) : '--'}`
+              this.fltDetails.eta = `${eta ? secToTime(eta) : '--'}`
+              this.isHidden = false
+              this.footer = '* 数据获取成功'
+              this.loading = false
+            } else {
+              this.footer = '* 未查询到该航班信息'
+              this.loading = false
+            }
+          } else {
+            this.footer = '* 数据未更新'
+            this.loading = false
+          }
+        } else {
+          this.footer = '* 未查询到该航班信息'
+          this.loading = false
+        }
+      } catch (error) {
+        this.footer = error.message
+        this.loading = false
+      }
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+/* laptop */
+@media (min-width: 750px) {
+  .flt-content {
+    max-width: 500px;
+  }
+}
+.flt-content {
+  margin-top: 30px;
+  .flt-input {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 20px;
+    .inner-wrapper {
+      text-align: left;
+      .tips {
+        font-style: italic;
+        color: #f00;
+        margin-top: 30px;
+        font-size: 12px;
+      }
+    }
+  }
+}
+
+.flt-wrapper {
+  padding: 15px;
+  border: 1px solid #e8e8e8;
+  border-radius: 5px;
+}
+
+.flight-head {
+  height: 2rem;
+  margin-bottom: 40px;
+  display: flex;
+  align-items: center;
+  .flt-logo {
+    width: 20px;
+    img {
+      width: 100%;
+    }
+  }
+  .flt-info {
+    font-size: 1rem;
+    margin-left: 3%;
+  }
+}
+
+.city {
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.depart,
+.arrive {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  max-width: 50%;
+  white-space: normal;
+}
+.arrive {
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.time {
+  margin-top: 0.5rem;
+  position: relative;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 2rem;
+  line-height: 2.4rem;
+}
+.plantime {
+  margin-top: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.arrow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, 5%);
+}
+
+.arrow-flight {
+  display: flex;
+  align-items: center;
+  width: 1.6rem;
+  height: 100%;
+  top: 0;
+}
+
+.hidden {
+  display: none;
+}
+.loading {
+  text-align: center;
+  margin-top: 20px;
+}
+</style>
