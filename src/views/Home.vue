@@ -56,6 +56,7 @@ export default {
   .content {
     padding: 20px 15px 20px 15px;
     .time-wrapper {
+      width: 90%;
       padding-left: 14px;
       padding-right: 14px;
     }

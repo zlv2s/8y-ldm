@@ -39,6 +39,9 @@
             >FAA Notam</a
           >
         </li>
+        <li>
+          <a href="/time" target="_blank">Flight Board Info</a>
+        </li>
       </ul>
     </a-card>
   </div>

@@ -46,12 +46,12 @@ import axios from 'axios'
 //   })
 // }
 
-const baseURL = 'https://nodespider-api.herokuapp.com'
+axios.defaults.baseURL = 'https://nodespider-api.herokuapp.com'
+axios.defaults.timeout = 10000
 
 export function getFltLabel({ fnum }) {
   return new Promise((resolve, reject) => {
     axios({
-      baseURL,
       url: `/api/flt/getFltId/${fnum}`
     })
       .then(res => {
@@ -66,7 +66,6 @@ export function getFltLabel({ fnum }) {
 export function getFltStatus({ id }) {
   return new Promise((resolve, reject) => {
     axios({
-      baseURL,
       url: `/api/flt/getFltDetail/${id}`
     })
       .then(res => {

@@ -6,45 +6,54 @@
           placeholder="请输入航班号"
           style="width: 200px"
           @search="searchFlt"
-        />
+        >
+          <a-button
+            slot="enterButton"
+            icon="search"
+            type="primary"
+            :loading="loading"
+          ></a-button>
+        </a-input-search>
         <p class="tips">{{ footer }}</p>
       </div>
     </div>
-    <div class="flt-wrapper" :class="{ hidden: isHidden }">
-      <div class="flight-head">
-        <div class="flt-logo">
-          <img :src="fltDetails.logo" alt="logo" />
+    <transition name="slide-fade">
+      <div class="flt-wrapper" v-if="show">
+        <div class="flight-head">
+          <div class="flt-logo">
+            <img :src="fltDetails.logo" alt="logo" />
+          </div>
+          <div class="flt-info">
+            {{ `${fltDetails.name} ${fltDetails.fnum}` }}
+          </div>
         </div>
-        <div class="flt-info">
-          {{ `${fltDetails.name} ${fltDetails.fnum}` }}
+        <div class="flight-body">
+          <div class="city">
+            <div class="depart">
+              <div class="airport">{{ fltDetails.forg }}</div>
+            </div>
+            <div class="arrive">
+              <div class="airport">{{ fltDetails.fdst }}</div>
+            </div>
+          </div>
+          <div class="time">
+            <div class="depart">{{ fltDetails.atd }}</div>
+            <div class="arrive">{{ fltDetails.eta }}</div>
+            <span class="dayspan"></span>
+            <div class="arrow arrow-flight">
+              <i class="iconfont icon-hangban"></i>
+            </div>
+          </div>
+          <div class="plantime">
+            <div class="depart">原计划 {{ fltDetails.std }}</div>
+            <div class="arrive">原计划 {{ fltDetails.sta }}</div>
+          </div>
         </div>
       </div>
-      <div class="flight-body">
-        <div class="city">
-          <div class="depart">
-            <div class="airport">{{ fltDetails.forg }}</div>
-          </div>
-          <div class="arrive">
-            <div class="airport">{{ fltDetails.fdst }}</div>
-          </div>
-        </div>
-        <div class="time">
-          <div class="depart">{{ fltDetails.atd }}</div>
-          <div class="arrive">{{ fltDetails.eta }}</div>
-          <span class="dayspan"></span>
-          <div class="arrow arrow-flight">
-            <i class="iconfont icon-hangban"></i>
-          </div>
-        </div>
-        <div class="plantime">
-          <div class="depart">原计划 {{ fltDetails.std }}</div>
-          <div class="arrive">原计划 {{ fltDetails.sta }}</div>
-        </div>
-      </div>
-    </div>
-    <div class="loading" v-if="loading">
+    </transition>
+    <!-- <div class="loading" v-if="loading">
       <a-spin :indicator="indicator" />
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -56,8 +65,8 @@ export default {
     return {
       indicator: <a-icon type="loading" style="font-size: 24px" spin />,
       loading: false,
-      isHidden: true,
-      footer: '* 只能查询临近起飞前的航班',
+      show: false,
+      footer: '* 仅限查询刚起飞的航班',
       fltDetails: {
         name: '',
         logo: '',
@@ -75,7 +84,7 @@ export default {
     async searchFlt(v) {
       if (!v) return (this.footer = '* 请输入正确航班号')
       this.loading = true
-      this.footer = '* 只能查询临近起飞前的航班'
+      this.footer = '* 仅限查询刚起飞的航班'
       try {
         const fRes = await getFltLabel({ fnum: v })
         if (fRes.data.length !== 0) {
@@ -108,7 +117,7 @@ export default {
               this.fltDetails.atd = `${atd ? secToTime(atd) : '--'}`
               this.fltDetails.sta = `${sta ? secToTime(sta) : '--'}`
               this.fltDetails.eta = `${eta ? secToTime(eta) : '--'}`
-              this.isHidden = false
+              this.show = true
               this.footer = '* 数据获取成功'
               this.loading = false
             } else {
@@ -124,7 +133,11 @@ export default {
           this.loading = false
         }
       } catch (error) {
-        this.footer = error.message
+        if (error.code.includes('ECONNABORTED')) {
+          this.footer = '*连接超时，请重试'
+        } else {
+          this.footer = error.message
+        }
         this.loading = false
       }
     }
@@ -232,11 +245,22 @@ export default {
   top: 0;
 }
 
-.hidden {
-  display: none;
-}
 .loading {
   text-align: center;
   margin-top: 20px;
+}
+
+/* Enter and leave animations can use different */
+/* durations and timing functions.              */
+.slide-fade-enter-active {
+  transition: all 0.3s ease;
+}
+.slide-fade-leave-active {
+  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+}
+.slide-fade-enter, .slide-fade-leave-to
+/* .slide-fade-leave-active below version 2.1.8 */ {
+  transform: translateX(10px);
+  opacity: 0;
 }
 </style>
