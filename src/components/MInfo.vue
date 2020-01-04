@@ -12,7 +12,7 @@
             icon="search"
             type="primary"
             :loading="loading"
-          ></a-button>
+          />
         </a-input-search>
         <p class="tips">{{ footer }}</p>
       </div>
@@ -82,11 +82,17 @@ export default {
   },
   methods: {
     async searchFlt(v) {
-      if (!v) return (this.footer = '* 请输入正确航班号')
+      let str = v.replace(/(^\s*)|(\s*$)/g, '')
+      if (str === '' || str === undefined || str === null) {
+        return (this.footer = '* 请输入正确航班号')
+      }
+      if (this.loading) {
+        return
+      }
       this.loading = true
       this.footer = '* 仅限查询刚起飞的航班'
       try {
-        const fRes = await getFltLabel({ fnum: v })
+        const fRes = await getFltLabel({ fnum: str })
         if (fRes.data.length !== 0) {
           // console.log({ fRes })
           // eslint-disable-next-line camelcase
@@ -106,7 +112,7 @@ export default {
               const { arrival: eta } = res['time']['estimated']
 
               this.fltDetails.fnum = callsign
-              this.fltDetails.logo = `https://pic.c-ctrip.com/AssetCatalog/airline/70/${v
+              this.fltDetails.logo = `https://pic.c-ctrip.com/AssetCatalog/airline/70/${str
                 .substr(0, 2)
                 .toUpperCase()}.png?v=2`
               // eslint-disable-next-line camelcase
