@@ -177,6 +177,9 @@
 
     <div class="info-wrapper">
       <div class="load-info" v-html="this.loadInfo"></div>
+      <a-button @click="handleClick" v-if="loadInfo" :loading="loading"
+        >Send</a-button
+      >
     </div>
     <a-modal
       :title="mvtTitle"
@@ -187,16 +190,28 @@
     >
       <div v-html="loadInfo" id="loadInfo"></div>
     </a-modal>
+    <a-modal @ok="verify" width="260px" title="请输入验证码" v-model="captchaShow">
+      <div class="captcha-wrapper">
+        <canvas width="100" height="34" id="captcha1"></canvas>
+        <a-input v-model="inputVal" style="width:40%"/>
+      </div>
+    </a-modal>
   </div>
 </template>
 
 <script>
-import { emptyObj, selectText, dateMap, icon } from '@/utils'
+import CaptchaMini from 'captcha-mini'
+import { emptyObj, selectText, dateMap, icon, email } from '@/utils'
+import { sendEmail } from '@/api'
 export default {
   data() {
     return {
       icon,
       visible: false,
+      captchaShow: false,
+      captchaVal: '',
+      inputVal: '',
+      loading: false,
       loadInfo: '',
       ac: {
         flt: '823',
@@ -267,9 +282,55 @@ export default {
       return `MVT/LDM 8Y${this.ac.flt} ${dateArr.join(
         ''
       )} ${this.ac.from.toUpperCase()}-${this.ac.to.toUpperCase()}`
+    },
+    receivers() {
+      if (this.loadInfo.includes('KLO') && this.loadInfo.includes('823')) {
+        return email.KLO
+      } else if (this.loadInfo.includes('TAG') && this.loadInfo.includes('825')) {
+        return email.TAG
+      } else {
+        return ''
+      }
     }
   },
   methods: {
+    verify() {
+      if (!this.inputVal) {
+        return this.$message.warning('验证码不能为空！')
+      }
+     if (this.inputVal === this.captchaVal) {
+       this.captchaShow = false
+      sendEmail({
+        emailAdd: this.receivers,
+        subject: this.mvtTitle,
+        content: this.loadInfo
+        })
+        .then(res => {
+          this.loading = false
+          if (res.code === 200) {
+            this.$message.success(res.msg)
+          } else {
+            this.$message.error(res.msg)
+          }
+        })
+        .catch(err => {
+          this.$message.error(err.message)
+          this.loading = false
+        })
+      } else {
+        this.$message.warning('验证码错误')
+        this.inputVal = ''
+        this.generateCaptcha()
+      }
+    },
+    generateCaptcha() {
+      let captcha1 = new CaptchaMini()
+      this.$nextTick(() => {
+        captcha1.draw(document.querySelector('#captcha1'), r => {
+          this.captchaVal = r
+        })
+      })
+    },
     handleOk() {
       selectText('loadInfo')
       document.execCommand('Copy', 'false', null)
@@ -277,6 +338,16 @@ export default {
       setTimeout(() => {
         this.visible = false
       }, 400)
+    },
+    handleClick() {
+      this.loading = true
+      if (this.receivers) {
+        this.captchaShow = true
+        this.generateCaptcha()
+      } else {
+        this.loading = false
+        return this.$message.warning('收件地址不匹配！')
+      }
     },
     utc(timestr) {
       const utcHR =
@@ -396,11 +467,18 @@ td input {
   .load-info {
     display: flex;
     flex-direction: column;
+    margin-bottom: 10%;
   }
 }
 
 #loadInfo {
   overflow-y: auto;
   height: 60vh;
+}
+
+.captcha-wrapper{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 </style>
