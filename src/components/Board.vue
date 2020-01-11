@@ -177,6 +177,10 @@
 
     <div class="info-wrapper">
       <div class="load-info" v-html="this.loadInfo"></div>
+      <div
+        class="receivers"
+        v-html="this.receivers.replace(/,/g, '<br/>')"
+      ></div>
       <a-button @click="handleClick" v-if="sendBtnShow" :loading="loading"
         >Send</a-button
       >
@@ -216,7 +220,7 @@
 <script>
 import Login from '@/components/Login'
 import CaptchaMini from 'captcha-mini'
-import { emptyObj, selectText, dateMap, icon, email } from '@/utils'
+import { emptyObj, selectText, dateMap, icon, emailAdd } from '@/utils'
 import { sendEmail } from '@/api'
 import { mapGetters, mapState, mapActions } from 'vuex'
 export default {
@@ -320,12 +324,12 @@ export default {
     },
     receivers() {
       if (this.loadInfo.includes('KLO') && this.loadInfo.includes('823')) {
-        return email.KLO
+        return emailAdd.KLO
       } else if (
         this.loadInfo.includes('TAG') &&
         this.loadInfo.includes('825')
       ) {
-        return email.TAG
+        return emailAdd.TAG
       } else {
         return ''
       }
@@ -514,7 +518,8 @@ td input {
   flex-direction: column;
   padding: 20px;
   margin-top: 30px;
-  .load-info {
+  .load-info,
+  .receivers {
     display: flex;
     flex-direction: column;
     margin-bottom: 10%;

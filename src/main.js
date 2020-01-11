@@ -16,7 +16,8 @@ import {
   Table,
   Spin,
   Form,
-  Avatar
+  Avatar,
+  Alert
 } from 'ant-design-vue'
 
 Vue.use(Row)
@@ -31,6 +32,7 @@ Vue.use(Table)
 Vue.use(Spin)
 Vue.use(Form)
 Vue.use(Avatar)
+Vue.use(Alert)
 Vue.prototype.$message = message
 
 Vue.config.productionTip = false
