@@ -82,7 +82,7 @@ export default {
             })
             .finally(() => {
               this.loading = false
-              console.log('final')
+              // console.log('final')
             })
         }
       })
