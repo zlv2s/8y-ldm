@@ -17,15 +17,42 @@
         <i class="iconfont icon-shizhong"></i>
       </a>
     </div>
-    <div class="utc-time" v-text="utc"></div>
+    <div class="utc-wrapper">
+      <i
+        class="iconfont icon-dengluyonghuming"
+        v-if="!user"
+        @click="openLoginModal"
+      />
+      <a-avatar
+        size="small"
+        v-else
+        style="color: #f56a00; backgroundColor: #fde3cf"
+        >{{ avatarName }}</a-avatar
+      >
+      <div class="utc-time" v-text="utc"></div>
+      <div class="utc-time2" v-text="utc2"></div>
+    </div>
   </div>
 </template>
 
 <script>
+import { time2UTC, time2UTC2 } from '@/utils'
+import { mapState, mapActions } from 'vuex'
 export default {
   data() {
     return {
-      utc: new Date().toUTCString().replace('GMT', '(UTC)')
+      utc: time2UTC(Date.now()),
+      utc2: time2UTC2(Date.now())
+    }
+  },
+
+  computed: {
+    ...mapState('authentication', ['user']),
+    avatarName() {
+      if (this.user) {
+        return this.user.username.substr(0, 1).toUpperCase()
+      }
+      return 'X'
     }
   },
   created() {
@@ -37,8 +64,13 @@ export default {
     }, 1000)
   },
   methods: {
+    ...mapActions('global', ['setLoginShow']),
     getUTCTime() {
-      this.utc = new Date().toUTCString().replace('GMT', '(UTC)')
+      this.utc = time2UTC(Date.now())
+      this.utc2 = time2UTC2(Date.now())
+    },
+    openLoginModal() {
+      this.setLoginShow(true)
     }
   }
 }
@@ -65,12 +97,21 @@ export default {
     }
   }
 
-  .utc-time {
-    vertical-align: middle;
-    color: #2870df;
-    height: 43px;
-    line-height: 43px;
-    text-align: center;
+  .utc-wrapper {
+    display: flex;
+    align-items: center;
+    color: #1890ff;
+    .utc-time,
+    .utc-time2 {
+      vertical-align: middle;
+      color: #1890ff;
+      height: 43px;
+      line-height: 43px;
+      text-align: center;
+    }
+    i {
+      cursor: pointer;
+    }
   }
 }
 
@@ -87,8 +128,14 @@ export default {
         margin-left: 6px;
       }
     }
-    .utc-time {
-      font-size: 1rem;
+    .utc-wrapper {
+      .utc-time {
+        font-size: 1rem;
+        margin-left: 10px;
+      }
+      .utc-time2 {
+        display: none;
+      }
     }
   }
   .time-board {
@@ -108,8 +155,14 @@ export default {
     .hd-tool {
       margin-left: -4%;
     }
-    .utc-time {
-      font-size: 0.7rem;
+    .utc-wrapper {
+      .utc-time {
+        display: none;
+      }
+      .utc-time2 {
+        font-size: 0.7rem;
+        margin-left: 10px;
+      }
     }
   }
 }

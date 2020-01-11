@@ -1,4 +1,5 @@
 import axios from 'axios'
+import authHeader from '@/service/authHeader'
 
 axios.defaults.baseURL = 'https://nodespider-api.herokuapp.com'
 axios.defaults.timeout = 10000
@@ -34,8 +35,9 @@ export function getFltStatus({ id }) {
 export function sendEmail({ emailAdd, subject, content }) {
   return new Promise((resolve, reject) => {
     axios({
-      url: 'http://localhost:8081/email',
+      url: 'https://end-8y.herokuapp.com/email/auth',
       method: 'post',
+      headers: authHeader(),
       data: {
         emailAdd,
         subject,

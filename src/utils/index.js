@@ -127,3 +127,17 @@ export function secToTime(timeStr) {
   let mins = '' + time.getMinutes()
   return `${hr.padStart(2, '0')}:${mins.padStart(2, '0')}`
 }
+
+export function time2UTC(timeStamp) {
+  return new Date(timeStamp).toUTCString().replace('GMT', '(UTC)')
+}
+
+export function time2UTC2(timeStamp) {
+  let dateObj = new Date(timeStamp)
+  let utcHr = dateObj.getUTCHours()
+  let utcMin = dateObj.getUTCMinutes()
+  let utcSec = dateObj.getUTCSeconds()
+  return `${(utcHr + '').padStart(2, '0')}:${(utcMin + '').padStart(2, '0')}:${(
+    utcSec + ''
+  ).padStart(2, '0')} (UTC)`
+}

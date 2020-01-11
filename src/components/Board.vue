@@ -177,7 +177,7 @@
 
     <div class="info-wrapper">
       <div class="load-info" v-html="this.loadInfo"></div>
-      <a-button @click="handleClick" v-if="loadInfo" :loading="loading"
+      <a-button @click="handleClick" v-if="sendBtnShow" :loading="loading"
         >Send</a-button
       >
     </div>
@@ -190,19 +190,35 @@
     >
       <div v-html="loadInfo" id="loadInfo"></div>
     </a-modal>
-    <a-modal @ok="verify" width="260px" title="请输入验证码" v-model="captchaShow">
+    <a-modal
+      @ok="verify"
+      @cancel="handleCancel"
+      width="260px"
+      title="请输入验证码"
+      v-model="captchaShow"
+    >
       <div class="captcha-wrapper">
         <canvas width="100" height="34" id="captcha1"></canvas>
-        <a-input v-model="inputVal" style="width:40%"/>
+        <a-input v-model="inputVal" style="width:40%" />
       </div>
+    </a-modal>
+    <a-modal
+      v-model="isLoginShow"
+      @cancel="closeLoginModal"
+      :footer="null"
+      width="460px"
+    >
+      <Login />
     </a-modal>
   </div>
 </template>
 
 <script>
+import Login from '@/components/Login'
 import CaptchaMini from 'captcha-mini'
 import { emptyObj, selectText, dateMap, icon, email } from '@/utils'
 import { sendEmail } from '@/api'
+import { mapGetters, mapState, mapActions } from 'vuex'
 export default {
   data() {
     return {
@@ -246,7 +262,26 @@ export default {
       }
     }
   },
+  components: {
+    Login
+  },
+  created() {
+    this['authentication/logout']()
+  },
   computed: {
+    ...mapGetters('global', ['loginShow']),
+    ...mapState('authentication', ['user']),
+    isLoginShow: {
+      get() {
+        return this.loginShow
+      },
+      set(v) {
+        this['global/setLoginShow'](v)
+      }
+    },
+    sendBtnShow() {
+      return this.loadInfo && this.user
+    },
     tob() {
       return Number(this.pax.adt) + Number(this.pax.chd) + Number(this.pax.inf)
     },
@@ -286,7 +321,10 @@ export default {
     receivers() {
       if (this.loadInfo.includes('KLO') && this.loadInfo.includes('823')) {
         return email.KLO
-      } else if (this.loadInfo.includes('TAG') && this.loadInfo.includes('825')) {
+      } else if (
+        this.loadInfo.includes('TAG') &&
+        this.loadInfo.includes('825')
+      ) {
         return email.TAG
       } else {
         return ''
@@ -294,34 +332,46 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+      'global/setLoginShow',
+      'authentication/login',
+      'authentication/logout'
+    ]),
+    closeLoginModal() {
+      this['global/setLoginShow'](false)
+    },
     verify() {
       if (!this.inputVal) {
         return this.$message.warning('验证码不能为空！')
       }
-     if (this.inputVal === this.captchaVal) {
-       this.captchaShow = false
-      sendEmail({
-        emailAdd: this.receivers,
-        subject: this.mvtTitle,
-        content: this.loadInfo
+      if (this.inputVal === this.captchaVal) {
+        this.captchaShow = false
+        sendEmail({
+          emailAdd: this.receivers,
+          subject: this.mvtTitle,
+          content: this.loadInfo
         })
-        .then(res => {
-          this.loading = false
-          if (res.code === 200) {
-            this.$message.success(res.msg)
-          } else {
-            this.$message.error(res.msg)
-          }
-        })
-        .catch(err => {
-          this.$message.error(err.message)
-          this.loading = false
-        })
+          .then(res => {
+            this.loading = false
+            this.inputVal = ''
+            if (res.code === 200) {
+              this.$message.success(res.msg)
+            } else {
+              this.$message.error(res.msg)
+            }
+          })
+          .catch(err => {
+            this.$message.error(err.message)
+            this.loading = false
+          })
       } else {
         this.$message.warning('验证码错误')
         this.inputVal = ''
         this.generateCaptcha()
       }
+    },
+    handleCancel() {
+      this.loading = false
     },
     generateCaptcha() {
       let captcha1 = new CaptchaMini()
@@ -476,7 +526,7 @@ td input {
   height: 60vh;
 }
 
-.captcha-wrapper{
+.captcha-wrapper {
   display: flex;
   align-items: center;
   justify-content: space-between;

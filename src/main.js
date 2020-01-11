@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
+import store from './store'
 import '@/styles/index.scss'
 import {
   Row,
@@ -13,7 +14,9 @@ import {
   Icon,
   Input,
   Table,
-  Spin
+  Spin,
+  Form,
+  Avatar
 } from 'ant-design-vue'
 
 Vue.use(Row)
@@ -26,6 +29,8 @@ Vue.use(Icon)
 Vue.use(Input)
 Vue.use(Table)
 Vue.use(Spin)
+Vue.use(Form)
+Vue.use(Avatar)
 Vue.prototype.$message = message
 
 Vue.config.productionTip = false
@@ -54,5 +59,6 @@ router.beforeEach((to, from, next) => {
 
 new Vue({
   router,
+  store,
   render: h => h(App)
 }).$mount('#app')
