@@ -1,3 +1,6 @@
+import cityList from '@/const/citylist.json'
+import cnCityList from '@/const/citylist_CN.json'
+
 // *empty Object KeyValue
 export function emptyObj(...obj) {
   obj.forEach(item => {
@@ -140,4 +143,38 @@ export function time2UTC2(timeStamp) {
   return `${(utcHr + '').padStart(2, '0')}:${(utcMin + '').padStart(2, '0')}:${(
     utcSec + ''
   ).padStart(2, '0')} (UTC)`
+}
+
+export function queryStringify(obj) {
+  const keys = Object.keys(obj)
+  let str = ''
+  keys.forEach(k => {
+    if (obj[k]) {
+      str += `&${k}=${obj[k]}`
+    }
+  })
+  return str.slice(1)
+}
+
+export function citySearch(code) {
+  const allCities = cityList.filter(
+    collection => collection['k'] !== '热门城市'
+  )
+  const cnAllCities = cnCityList.filter(
+    collection => collection['k'] !== '热门城市'
+  )
+
+  let intArr = []
+  let cnArr = []
+  for (let item of allCities) {
+    intArr = [...intArr, ...item['n']]
+  }
+
+  for (let item of cnAllCities) {
+    cnArr = [...cnArr, ...item['n']]
+  }
+
+  return [...intArr, ...cnArr].filter(
+    cityObj => code.toUpperCase() === cityObj['c']
+  )
 }

@@ -3,7 +3,7 @@
     <a-row>
       <a-col :xs="0" :md="7" :lg="8"></a-col>
       <a-col :xs="24" :md="10" :lg="8">
-        <MInfo />
+        <router-view></router-view>
       </a-col>
       <a-col :xs="0" :md="7" :lg="8"></a-col>
     </a-row>
@@ -11,10 +11,7 @@
 </template>
 
 <script>
-import MInfo from '@/components/MInfo'
-export default {
-  components: { MInfo }
-}
+export default {}
 </script>
 
 <style lang="scss" scoped>

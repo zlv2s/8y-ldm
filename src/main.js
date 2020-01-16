@@ -17,7 +17,8 @@ import {
   Spin,
   Form,
   Avatar,
-  Alert
+  Alert,
+  AutoComplete
 } from 'ant-design-vue'
 
 Vue.use(Row)
@@ -33,6 +34,7 @@ Vue.use(Spin)
 Vue.use(Form)
 Vue.use(Avatar)
 Vue.use(Alert)
+Vue.use(AutoComplete)
 Vue.prototype.$message = message
 
 Vue.config.productionTip = false

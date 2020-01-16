@@ -13,17 +13,27 @@ const routes = [
   {
     path: '/404',
     name: '404',
-    component: () => import('../views/404.vue')
+    component: () => import('@/views/404.vue')
   },
   {
     path: '/weather',
     name: 'Weather',
-    component: () => import('../views/Weather.vue')
+    component: () => import('@/views/Weather.vue')
   },
   {
-    path: '/time',
-    name: 'Time',
-    component: () => import('../views/Time.vue')
+    path: '/func',
+    name: 'Func',
+    component: () => import('@/views/Func.vue'),
+    children: [
+      {
+        path: 'time',
+        component: () => import('@/components/MInfo.vue')
+      },
+      {
+        path: 'airport',
+        component: () => import('@/components/AirportSearch.vue')
+      }
+    ]
   },
   {
     path: '*',

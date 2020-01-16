@@ -13,7 +13,7 @@
       <a href="https://www.planespotters.net/search" target="_blank">
         <i class="iconfont icon-fj_qifei_a"></i>
       </a>
-      <a href="/time" target="_blank" class="time-board">
+      <a href="/func/time" target="_blank" class="time-board">
         <i class="iconfont icon-shizhong"></i>
       </a>
     </div>
