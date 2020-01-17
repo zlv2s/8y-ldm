@@ -40,13 +40,22 @@ export default {
 
   methods: {
     handleSearch(value) {
-      if (value.length === 3) {
-        this.dataSource = !value ? [] : this.flatRes(citySearch(value))
+      let chnPattern = new RegExp('[\u4E00-\u9FA5]+')
+      let engPattern = new RegExp('[A-Za-z]+')
+
+      if (value.length === 3 && engPattern.test(value)) {
+        this.dataSource = !value
+          ? []
+          : this.flatRes(citySearch(value)) || [value.toUpperCase()]
+      }
+      if (chnPattern.test(value)) {
+        return this.$message.warning('请输入正确机场IATA三字码！')
       }
     },
     onSelect(value) {
-      if (value.length < 3) {
-        return this.$message.warning('输入有误！')
+      let chnPattern = new RegExp('[\u4E00-\u9FA5]+')
+      if (chnPattern.test(value)) {
+        return this.$message.warning('请输入正确机场三字码！')
       }
       jsonp(value).then(res => {
         if (res.c === 0) {
@@ -54,12 +63,14 @@ export default {
           this.airportInfo.code = res.result[0]['code']
           this.airportInfo.displayName = res.result[0]['displayName']
         } else {
-          this.$message.warning('输入有误！')
+          this.$message.warning('未搜索到结果，请重新输入！')
         }
       })
     },
     flatRes(arr) {
-      return Object.values(arr[0])
+      if (arr.length > 0) {
+        return Object.values(arr[0])
+      }
     }
   }
 }

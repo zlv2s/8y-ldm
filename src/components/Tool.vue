@@ -40,7 +40,10 @@
           >
         </li>
         <li>
-          <a href="/time" target="_blank">Flight Board Info</a>
+          <a href="/func/time" target="_blank">起飞状态查询</a>
+        </li>
+        <li>
+          <a href="/func/airport" target="_blank">三字代码查询</a>
         </li>
       </ul>
     </a-card>
