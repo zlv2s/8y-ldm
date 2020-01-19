@@ -24,8 +24,11 @@
             <img :src="fltDetails.logo" alt="logo" />
           </div>
           <div class="flt-info">
-            {{ `${fltDetails.name} ${fltDetails.fnum}` }}
+            {{ `${fltDetails.status} ${fltDetails.name} ${fltDetails.fnum}` }}
           </div>
+        </div>
+        <div class="flt-center">
+          <span>{{ fltDetails.acInfo }}</span>
         </div>
         <div class="flight-body">
           <div class="city">
@@ -38,7 +41,7 @@
           </div>
           <div class="time">
             <div class="depart">{{ fltDetails.atd }}</div>
-            <div class="arrive">{{ fltDetails.eta }}</div>
+            <div class="arrive">{{ arrivalTime }}</div>
             <span class="dayspan"></span>
             <div class="arrow arrow-flight">
               <i class="iconfont icon-hangban"></i>
@@ -51,9 +54,6 @@
         </div>
       </div>
     </transition>
-    <!-- <div class="loading" v-if="loading">
-      <a-spin :indicator="indicator" />
-    </div> -->
   </div>
 </template>
 
@@ -63,21 +63,30 @@ import { secToTime } from '@/utils'
 export default {
   data() {
     return {
-      indicator: <a-icon type="loading" style="font-size: 24px" spin />,
       loading: false,
       show: false,
       footer: '* 仅限查询刚起飞的航班',
       fltDetails: {
+        acInfo: '',
         name: '',
         logo: '',
+        status: '',
         fnum: '',
         forg: '',
         fdst: '',
         std: '',
         atd: '',
         sta: '',
-        eta: ''
+        eta: '',
+        ata: ''
       }
+    }
+  },
+  computed: {
+    arrivalTime() {
+      return this.fltDetails.ata === '--'
+        ? this.fltDetails.eta
+        : `${this.fltDetails.ata}A`
     }
   },
   methods: {
@@ -94,10 +103,10 @@ export default {
       try {
         const fRes = await getFltLabel({ fnum: str })
         if (fRes.data.length !== 0) {
-          // console.log({ fRes })
+          const { id, label, type } = fRes['data'][0]
           // eslint-disable-next-line camelcase
           const { callsign, schd_from, schd_to } = fRes['data'][0]['detail']
-          const resolvedRet = await getFltStatus({ id: fRes['data'][0]['id'] })
+          const resolvedRet = await getFltStatus({ id })
           if (resolvedRet.code !== 404) {
             const res = resolvedRet['data']
             if (res['time']) {
@@ -108,9 +117,11 @@ export default {
                 this.fltDetails.name = '未知'
               }
               const { departure: std, arrival: sta } = res['time']['scheduled']
-              const { departure: atd } = res['time']['real']
+              const { departure: atd, arrival: ata } = res['time']['real']
               const { arrival: eta } = res['time']['estimated']
 
+              this.fltDetails.acInfo = label
+              this.fltDetails.status = `(${type})` || ''
               this.fltDetails.fnum = callsign
               this.fltDetails.logo = `https://pic.c-ctrip.com/AssetCatalog/airline/70/${str
                 .substr(0, 2)
@@ -123,6 +134,8 @@ export default {
               this.fltDetails.atd = `${atd ? secToTime(atd) : '--'}`
               this.fltDetails.sta = `${sta ? secToTime(sta) : '--'}`
               this.fltDetails.eta = `${eta ? secToTime(eta) : '--'}`
+              this.fltDetails.ata = `${ata ? secToTime(ata) : '--'}`
+
               this.show = true
               this.footer = '* 数据获取成功'
               this.loading = false
@@ -186,7 +199,7 @@ export default {
 
 .flight-head {
   height: 2rem;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
   display: flex;
   align-items: center;
   .flt-logo {
@@ -198,6 +211,15 @@ export default {
   .flt-info {
     font-size: 1rem;
     margin-left: 3%;
+    font-weight: 500;
+  }
+}
+
+.flt-center {
+  font-size: 0.9rem;
+  margin-bottom: 30px;
+  span {
+    background-color: #eee;
   }
 }
 
