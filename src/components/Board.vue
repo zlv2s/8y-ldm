@@ -270,9 +270,9 @@ export default {
   components: {
     Login
   },
-  created() {
-    this['authentication/logout']()
-  },
+  // created() {
+  //   this['authentication/logout']()
+  // },
   computed: {
     ...mapGetters('global', ['loginShow']),
     ...mapState('authentication', ['user']),

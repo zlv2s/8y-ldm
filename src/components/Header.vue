@@ -27,6 +27,7 @@
         size="small"
         v-else
         style="color: #f56a00; backgroundColor: #fde3cf"
+        @click="logout"
         >{{ avatarName }}</a-avatar
       >
       <div class="utc-time" v-text="utc"></div>
@@ -64,19 +65,25 @@ export default {
     }, 1000)
   },
   methods: {
-    ...mapActions('global', ['setLoginShow']),
+    ...mapActions(['global/setLoginShow', 'authentication/logout']),
     getUTCTime() {
       this.utc = time2UTC(Date.now())
       this.utc2 = time2UTC2(Date.now())
     },
+    logout() {
+      this['authentication/logout']()
+    },
     openLoginModal() {
-      this.setLoginShow(true)
+      this['global/setLoginShow'](true)
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.utc-wrapper /deep/ .ant-avatar {
+  cursor: pointer;
+}
 .header-info {
   background: #eee;
   display: flex;
