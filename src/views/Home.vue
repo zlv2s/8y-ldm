@@ -10,6 +10,7 @@
         <a-col :xs="0" :md="7" :lg="8">
           <div class="time-wrapper">
             <MInfo />
+            <AirportSearch />
           </div>
         </a-col>
         <a-col :xs="24" :md="10" :lg="8">
@@ -34,6 +35,7 @@ import Footer from '@/components/Footer.vue'
 import Board from '@/components/Board.vue'
 import Tool from '@/components/Tool.vue'
 import MInfo from '@/components/MInfo.vue'
+import AirportSearch from '@/components/AirportSearch.vue'
 
 export default {
   name: 'home',
@@ -45,7 +47,8 @@ export default {
     Footer,
     Board,
     Tool,
-    MInfo
+    MInfo,
+    AirportSearch
   },
   methods: {}
 }
