@@ -220,7 +220,8 @@
 <script>
 import Login from '@/components/Login'
 import CaptchaMini from 'captcha-mini'
-import { emptyObj, selectText, dateMap, icon, emailAdd } from '@/utils'
+import { emptyObj, selectText } from '@/utils'
+import { dateMap, icon, emailAdd } from '@/const'
 import { sendEmail } from '@/api'
 import { mapGetters, mapState, mapActions } from 'vuex'
 export default {
@@ -353,7 +354,12 @@ export default {
         sendEmail({
           emailAdd: this.receivers,
           subject: this.mvtTitle,
-          content: this.loadInfo
+          content: `${this.loadInfo}
+          <br/>
+          <br/>
+          <p>---------</p>
+          <p><strong>Leo / CTU Station</strong></pp>
+          `
         })
           .then(res => {
             this.loading = false
