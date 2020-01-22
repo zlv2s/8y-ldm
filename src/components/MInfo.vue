@@ -52,6 +52,11 @@
             <div class="arrive">原计划 {{ fltDetails.sta }}</div>
           </div>
         </div>
+        <div class="flt-footer">
+          <p class="time-notice">
+            All times based on China Standard Time (CST), UTC +8
+          </p>
+        </div>
       </div>
     </transition>
   </div>
@@ -220,6 +225,13 @@ export default {
   margin-bottom: 30px;
   span {
     background-color: #eee;
+  }
+}
+
+.flt-footer {
+  margin-top: 20px;
+  .time-notice {
+    font-size: 14px;
   }
 }
 
