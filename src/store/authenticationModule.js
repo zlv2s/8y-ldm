@@ -10,7 +10,7 @@ export const authentication = {
   state: initialState,
   actions: {
     login({ dispatch, commit }, { username, password }) {
-      commit('loginRequest', { username })
+      // commit('loginRequest', { username })
 
       return authService.login({ username, password }).then(
         user => {
